@@ -16,25 +16,18 @@ Sistema de cotización full-stack.
 - Frontend: Angular
 - Base de datos: PostgreSQL 10
 
-## Estructura
-- `/02_backend` → API REST
-- `/03_frontend` → Aplicación web
-- `/01_database` → Scripts y configuración DB
 
 ## Ejecución local
 1. Levantar PostgreSQL
 2. Iniciar backend (Spring Boot)
 3. Iniciar frontend (Angular)
 
-## Arquitectura
-- Backend: Java 21 / Spring Boot 4
-- Frontend: Angular
-- Base de datos: PostgreSQL 10
 
 ## Estructura
 - `/02_backend` → API REST
 - `/03_frontend` → Aplicación web
 - `/01_database` → Scripts y configuración DB
+
 
 ## Estructura del proyecto
 
@@ -82,3 +75,8 @@ app-cotizacion-v1/
 ├── README.md
 
 └── docker-compose.yml       # (opcional) levantar todo el stack
+
+
+Autor 
+---
+David Raymundo Lache Alvarez
