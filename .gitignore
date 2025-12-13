@@ -1,22 +1,48 @@
-# Backend (Java / Node / Spring)
-target/
-node_modules/
+############################
+# General
+############################
 .env
-
-# Frontend
-dist/
-build/
-node_modules/
-
-# Base de datos
 *.log
-*.bak
-*.sql~
 
-# IDE
+############################
+# Java / Spring Boot
+############################
+target/
+*.class
+*.jar
+*.war
+*.ear
+.mvn/wrapper/maven-wrapper.jar
+
+############################
+# Node / Angular
+############################
+node_modules/
+dist/
+.angular/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+############################
+# IDEs
+############################
 .idea/
 .vscode/
 *.iml
+.classpath
+.project
+.settings/
 
+############################
 # OS
+############################
 .DS_Store
+Thumbs.db
+
+############################
+# PostgreSQL / DB
+############################
+*.bak
+*.dump
+*.sql~
