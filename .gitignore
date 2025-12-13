@@ -1,0 +1,22 @@
+# Backend (Java / Node / Spring)
+target/
+node_modules/
+.env
+
+# Frontend
+dist/
+build/
+node_modules/
+
+# Base de datos
+*.log
+*.bak
+*.sql~
+
+# IDE
+.idea/
+.vscode/
+*.iml
+
+# OS
+.DS_Store
