@@ -1,0 +1,33 @@
+version: "3.9"
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: postgres-cotizacion
+    restart: unless-stopped
+
+    environment:
+      POSTGRES_DB: db_cotizacion_v1
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 1234
+
+    ports:
+      - "5432:5432"
+
+    volumes:
+      # Persistencia de datos
+      - postgres_data:/var/lib/postgresql/data
+
+      # Scripts de inicialización
+      - ../scripts:/docker-entrypoint-initdb.d
+
+    networks:
+      - cotizacion-net
+
+volumes:
+  postgres_data:
+
+
+networks:
+  cotizacion-net:
+    driver: bridge
