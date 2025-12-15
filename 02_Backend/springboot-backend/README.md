@@ -43,40 +43,30 @@ Antes de ejecutar el proyecto, asegúrate de contar con:
 Estructura principal del proyecto:
 
 ```markdown
+
 springboot-backend/
 ├── src/
 │   ├── main/
-│   │   ├── java/com/cotizacion/backend/
-│   │   │
-│   │   │── AppCotizacionV1Application.java
-│   │   │
-│   │   │── common/
-│   │   │   ├── exception/
-│   │   │   └── util/
-│   │   │
-│   │   │── config/
-│   │   │
-│   │   │── mapper/
-│   │   │
-│   │   │── persistence/
-│   │   │   ├── entity/
-│   │   │   └── repository/
-│   │   │
-│   │   │── presentation/
-│   │   │   └── controller/
-│   │   │
-│   │   │── dto/
-│   │   │   ├── request/
-│   │   │   └── response/
-│   │   │
-│   │   │── service/
-│   │   │   ├── interfaces/
-│   │   │   └── impl/
-│   │   │
+│   │   ├── java/com/cotizacion/backend/  
+│   │   │	├── common/
+│   │   │   │	├── exception/
+│   │   │	│  	└── util/
+│   │   │	│── config/
+│   │   │	│── mapper/
+│   │   │	│── persistence/
+│   │   │	│	   ├── entity/
+│   │   │	│	   └── repository/
+│   │   │	│── presentation/
+│   │   │	│   │── controller/
+│   │   │	│	└── dto/
+│   │   │	│  		├── request/
+│   │   │	│	  	└── response/
+│   │   │	└── service/
+│   │   │   	├── interfaces/
+│   │   │   	└── impl/
+│   │	│── AppCotizacionV1Application.java
 │   │   └── resources/
-│   │
 │   └── test/
-│
 ├── pom.xml
 └── README.md
 
