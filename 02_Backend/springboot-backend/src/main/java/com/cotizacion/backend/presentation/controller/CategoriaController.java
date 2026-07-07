@@ -1,5 +1,6 @@
 package com.cotizacion.backend.presentation.controller;
 
+import com.cotizacion.backend.persistence.entity.Categoria;
 import com.cotizacion.backend.service.interfaces.CategoriaService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -16,15 +17,16 @@ public class CategoriaController {
     // private final CategoriaMapper mapper; // Asumimos inyección del mapper
 
     @GetMapping
-    public ResponseEntity<List<?>> listarCategorias() {
+    public ResponseEntity<List<Categoria>> listarCategorias() {
         // En un caso real, esto devolvería List<CategoriaResponseDTO>
         return ResponseEntity.ok(categoriaService.findAll());
     }
 
     @PostMapping
-    public ResponseEntity<?> crearCategoria(@RequestBody @Valid Object requestDTO) {
+    public ResponseEntity<Categoria> crearCategoria(@RequestBody @Valid Object requestDTO) {
         // Categoria entity = mapper.toEntity(requestDTO);
-        // return ResponseEntity.status(HttpStatus.CREATED).body(mapper.toDto(categoriaService.save(entity)));
+        // return
+        // ResponseEntity.status(HttpStatus.CREATED).body(mapper.toDto(categoriaService.save(entity)));
         return ResponseEntity.status(HttpStatus.CREATED).body(categoriaService.save(null)); // Retorno temporal
     }
 }
