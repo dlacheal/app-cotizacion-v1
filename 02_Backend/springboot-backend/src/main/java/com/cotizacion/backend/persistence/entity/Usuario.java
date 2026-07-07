@@ -35,7 +35,11 @@ public class Usuario implements Serializable {
     @JoinColumn(name = "PERSONA_ID", nullable = false)
     private Persona persona;
 
-    // Opcional: Para cargar roles automáticamente
-    @OneToMany(mappedBy = "usuario", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private List<Authority> authorities;
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(
+        name = "Usuario_Rol",
+        joinColumns = @JoinColumn(name = "ID_USUARIO"),
+        inverseJoinColumns = @JoinColumn(name = "ID_ROL")
+    )
+    private List<Rol> roles;
 }

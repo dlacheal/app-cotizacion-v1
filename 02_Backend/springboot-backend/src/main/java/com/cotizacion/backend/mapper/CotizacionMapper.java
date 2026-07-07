@@ -17,6 +17,9 @@ public interface CotizacionMapper {
     // 1. LECTURA (Entity -> ResponseDTO)
     @Mapping(target = "clienteNombre", source = "cliente.nombre")
     @Mapping(target = "clienteRucDni", source = "cliente.rucDni")
+    @Mapping(target = "clienteTelefono", source = "cliente.telefono")
+    @Mapping(target = "clienteEmail", source = "cliente.email")
+    @Mapping(target = "clienteDireccion", source = "cliente.direccion")
     @Mapping(target = "usuarioUsername", source = "usuario.username")
     @Mapping(target = "monedaCodigo", source = "moneda.codigo")
     @Mapping(target = "monedaDescripcion", source = "moneda.descripcion")
@@ -28,7 +31,6 @@ public interface CotizacionMapper {
     @Mapping(target = "idProducto", source = "producto.idProducto")
         // Nota: Si agregaste Proveedor al DTO de respuesta, mapéalo aquí también
     CotizacionDetalleResponseDTO toDetalleDto(CotizacionDetalle entity);
-
 
     // 2. ESCRITURA (RequestDTO -> Entity)
 
@@ -51,7 +53,6 @@ public interface CotizacionMapper {
     @Mapping(target = "usuario.idUsuario", source = "idUsuario")
     @Mapping(target = "detalles", source = "detalles")
     Cotizacion toEntity(CotizacionCreateDTO dto);
-
 
     // DETALLE (RequestDTO -> Entity)
 

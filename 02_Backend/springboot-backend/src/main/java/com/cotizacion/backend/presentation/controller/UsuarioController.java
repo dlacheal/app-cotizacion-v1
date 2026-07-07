@@ -2,17 +2,25 @@ package com.cotizacion.backend.presentation.controller;
 
 import com.cotizacion.backend.presentation.dto.request.UsuarioRegistroDTO; // DTO específico para registro
 import com.cotizacion.backend.service.interfaces.UsuarioService;
+import com.cotizacion.backend.persistence.entity.Usuario;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import jakarta.validation.Valid;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/v1/auth") // Endpoint más común para seguridad/login
 @RequiredArgsConstructor
 public class UsuarioController {
     private final UsuarioService usuarioService;
+
+    @GetMapping("/usuarios")
+    public ResponseEntity<List<Usuario>> listarTodos() {
+        return ResponseEntity.ok(usuarioService.findAll());
+    }
     // Asumimos inyección de PersonaService y UsuarioMapper
 
     @PostMapping("/register")
