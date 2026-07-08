@@ -1,29 +1,35 @@
-<h5>Detalles de la cotización</h5>
+<h6 class="text-secondary small fw-bold text-uppercase mb-3" style="letter-spacing: 0.5px; font-size: 0.75rem;">Detalles de la cotización</h6>
+
 @if(detalles.length > 0) {
-<table class="table table-striped table-bordered table-hover table-sm">
-    <thead class="table-dark thead-inverse bg-dark text-white">
-        <tr>
-            <th>ID</th>
-            <th>Nombre</th>
-            <th>Cantidad</th>
-            <th>UM</th>
-            <th>Precio Costo U.</th>
-            <th>Porcentaje Gan.</th>
-            <th>Precio Venta U.</th>
-            <th>Subtotal</th>
-            <th>IGV</th>
-            <th>Monto</th>
-            @if (isNueva) {
-                <th>Eliminar</th>
+<div class="overflow-hidden rounded-3 border">
+    <table class="table table-hover table-responsive-premium mb-0 align-middle">
+        <thead>
+            <tr>
+                <th scope="col" class="ps-3">ID</th>
+                <th scope="col">Nombre</th>
+                <th scope="col">Cantidad</th>
+                <th scope="col">UM</th>
+                <th scope="col">P. Costo U.</th>
+                <th scope="col">Ganancia</th>
+                <th scope="col">P. Venta U.</th>
+                <th scope="col">Subtotal</th>
+                <th scope="col">IGV</th>
+                <th scope="col">Monto</th>
+                @if (isNueva) {
+                    <th scope="col" class="text-center">Acciones</th>
+                }
+            </tr>
+        </thead>
+        <tbody>
+            @for (detalle of detalles; track detalle.idDetalle) {
+            <tr row-item [item]="detalle" [isNueva]="isNueva" (removeEventEmitter)="onRemove($event)"></tr>
             }
-        </tr>
-    </thead>
-    <tbody>
-        @for (detalle of detalles; track detalle.idDetalle) {
-        <tr row-item [item]="detalle" [isNueva]="isNueva" (removeEventEmitter)="onRemove($event)"></tr>
-        }
-    </tbody>
-</table>
+        </tbody>
+    </table>
+</div>
 } @else {
-<div class="alert alert-warning">No hay detalles para mostrar.</div>
+<div class="alert alert-warning border-0 rounded-3 d-flex align-items-center p-3 animate-fade-in" role="alert">
+    <i class="bi bi-info-circle-fill me-2 fs-5"></i>
+    <span class="small fw-medium">No hay detalles de productos para mostrar en esta cotización.</span>
+</div>
 }

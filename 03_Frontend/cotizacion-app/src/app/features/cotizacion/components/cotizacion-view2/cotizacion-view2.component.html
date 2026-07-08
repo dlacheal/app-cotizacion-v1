@@ -1,35 +1,24 @@
-<div class="row my-12">
-    <div class="col-2">
-
-    </div>
-    <div class="col-2">
-        <h5>Inversión</h5>
-        <ul class="list-group">
-            <li class="list-group-item">{{ inversionTotal }}</li>
-        </ul>
-    </div>
-    <div class="col-2">
-        <h5>Utilidad</h5>
-        <ul class="list-group">
-            <li class="list-group-item">{{ utilidadBrutaTotal }}</li>
-        </ul>
-    </div>
-    <div class="col-2">
-        <h5>Subtotal</h5>
-        <ul class="list-group">
-            <li class="list-group-item">{{ subTotal }}</li>
-        </ul>
-    </div>
-    <div class="col-2">
-        <h5>IGV T.</h5>
-        <ul class="list-group">
-            <li class="list-group-item">{{ montoIgv }}</li>
-        </ul>
-    </div>
-    <div class="col-2">
-        <h5>Total</h5>
-        <ul class="list-group">
-            <li class="list-group-item">{{ totalGeneral }}</li>
-        </ul>
+<div class="card bg-light-subtle border-0 shadow-sm my-3 p-4">
+    <div class="row g-3 align-items-center">
+        <div class="col-6 col-md-2">
+            <span class="text-muted small fw-bold text-uppercase d-block mb-1" style="font-size: 0.65rem; letter-spacing: 0.5px;">Inversión</span>
+            <span class="fw-semibold text-secondary fs-6">{{ inversionTotal }}</span>
+        </div>
+        <div class="col-6 col-md-2">
+            <span class="text-muted small fw-bold text-uppercase d-block mb-1" style="font-size: 0.65rem; letter-spacing: 0.5px;">Utilidad</span>
+            <span class="fw-semibold text-secondary fs-6">{{ utilidadBrutaTotal }}</span>
+        </div>
+        <div class="col-6 col-md-2">
+            <span class="text-muted small fw-bold text-uppercase d-block mb-1" style="font-size: 0.65rem; letter-spacing: 0.5px;">Subtotal</span>
+            <span class="fw-semibold text-secondary fs-6">{{ subTotal }}</span>
+        </div>
+        <div class="col-6 col-md-2">
+            <span class="text-muted small fw-bold text-uppercase d-block mb-1" style="font-size: 0.65rem; letter-spacing: 0.5px;">IGV</span>
+            <span class="fw-semibold text-secondary fs-6">{{ montoIgv }}</span>
+        </div>
+        <div class="col-12 col-md-4 text-md-end border-start-md ps-md-4">
+            <span class="text-muted small fw-bold text-uppercase d-block mb-1" style="font-size: 0.65rem; letter-spacing: 0.5px;">Total General</span>
+            <span class="fw-extrabold text-primary fs-3">{{ totalGeneral }}</span>
+        </div>
     </div>
 </div>

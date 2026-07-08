@@ -1,61 +1,151 @@
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-  <div class="container-fluid">
-    <a class="navbar-brand d-flex align-items-center" routerLink="/">
-      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor"
-        class="bi bi-file-earmark-text me-2" viewBox="0 0 16 16">
-        <path
-          d="M5.5 7a.5.5 0 0 0 0 1h5a.5.5 0 0 0 0-1zM5 9.5a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5m0 2a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5" />
-        <path
-          d="M14 4.5V14a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2h5.5zm-3 0A1.5 1.5 0 0 1 9.5 3V1H4a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V4.5z" />
-      </svg>
-      <strong>{{ title }}</strong>
-    </a>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
-      aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
+<!-- Barra superior móvil visible solo en resoluciones menores a lg (992px) -->
+<div class="mobile-top-nav d-lg-none">
+  <a class="navbar-brand d-flex align-items-center" routerLink="/">
+    <i class="bi bi-file-earmark-text me-2 text-primary fs-4"></i>
+    <strong>{{ title }}</strong>
+  </a>
+  <button class="btn-toggle" type="button" data-bs-toggle="offcanvas" data-bs-target="#sidebarOffcanvas"
+    aria-controls="sidebarOffcanvas">
+    <i class="bi bi-list"></i>
+  </button>
+</div>
 
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-        <li class="nav-item">
-          <a class="nav-link" routerLink="/cotizacion" routerLinkActive="active"
-            [routerLinkActiveOptions]="{exact: true}">Cotizaciones</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" routerLink="/categoria" routerLinkActive="active">Categorías</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" routerLink="/cliente" routerLinkActive="active">Clientes</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" routerLink="/producto" routerLinkActive="active">Productos</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" routerLink="/proveedor" routerLinkActive="active">Proveedores</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" routerLink="/usuario" routerLinkActive="active">Usuarios</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" routerLink="/almacen" routerLinkActive="active">Almacenes</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" routerLink="/moneda" routerLinkActive="active">Monedas</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" routerLink="/metodo-pago" routerLinkActive="active">Método Pago</a>
-        </li>
-      </ul>
-      <div class="d-flex align-items-center ms-auto">
-        <span class="text-light me-3 small">
-          <i class="bi bi-person-circle me-1"></i>
-          {{ authService.nombrePersona() }}
+<!-- Menú lateral Sidebar, se comporta como Offcanvas en móviles y estático en escritorios -->
+<div class="offcanvas-lg offcanvas-start sidebar-premium" tabindex="-1" id="sidebarOffcanvas"
+  aria-labelledby="sidebarOffcanvasLabel">
+
+  <!-- Cabecera del sidebar (incluye botón de cerrar en offcanvas móvil) -->
+  <div class="sidebar-header d-flex align-items-center justify-content-between">
+    <a class="navbar-brand d-flex align-items-center text-decoration-none" routerLink="/">
+      <i class="bi bi-file-earmark-text-fill me-2 text-primary fs-3"></i>
+      <span class="brand-title text-white">{{ title }}</span>
+    </a>
+    <button type="button" class="btn-close btn-close-white d-lg-none" data-bs-dismiss="offcanvas"
+      data-bs-target="#sidebarOffcanvas" aria-label="Close"></button>
+  </div>
+
+  <!-- Enlaces y Contenido del Sidebar con scroll independiente -->
+  <div class="sidebar-content">
+    <div class="sidebar-user-card">
+      <div class="sidebar-user-avatar">
+        {{ authService.nombrePersona()?.substring(0, 1)?.toUpperCase() || 'U' }}
+      </div>
+      <div class="sidebar-user-info">
+        <span class="sidebar-user-name">{{ authService.nombrePersona() }}</span>
+        <span class="sidebar-user-role">
+          {{ authService.roles()![0] === 'ROLE_ADMIN' ? 'ADMINISTRADOR' : (authService.roles()![0] === 'ROLE_USER' ?
+          'USUARIO' : authService.roles()![0]) }}
         </span>
-        <button class="btn btn-outline-light btn-sm fw-semibold" (click)="logout()">
-          <i class="bi bi-box-arrow-right me-1"></i>
-          Logout
-        </button>
       </div>
     </div>
+
+    <!-- Categoría 0: Estadísticas -->
+    <div class="sidebar-category-title">Estadísticas</div>
+    <ul class="sidebar-menu">
+      <li class="nav-item">
+        <a class="nav-link" routerLink="/dashboard" routerLinkActive="active" data-bs-dismiss="offcanvas"
+          data-bs-target="#sidebarOffcanvas">
+          <i class="bi bi-speedometer2"></i>
+          <span>Dashboard</span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" routerLink="/reportes" routerLinkActive="active" data-bs-dismiss="offcanvas"
+          data-bs-target="#sidebarOffcanvas">
+          <i class="bi bi-bar-chart-line-fill"></i>
+          <span>Reportes</span>
+        </a>
+      </li>
+    </ul>
+
+    <!-- Categoría 1: Documentación y Negocio -->
+    <div class="sidebar-category-title">Negocios</div>
+    <ul class="sidebar-menu">
+      <li class="nav-item">
+        <a class="nav-link" routerLink="/cotizacion" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}"
+          data-bs-dismiss="offcanvas" data-bs-target="#sidebarOffcanvas">
+          <i class="bi bi-file-earmark-spreadsheet"></i>
+          <span>Cotizaciones</span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" routerLink="/cliente" routerLinkActive="active" data-bs-dismiss="offcanvas"
+          data-bs-target="#sidebarOffcanvas">
+          <i class="bi bi-people"></i>
+          <span>Clientes</span>
+        </a>
+      </li>
+    </ul>
+
+    <!-- Categoría 2: Catálogos -->
+    <div class="sidebar-category-title">Catálogos</div>
+    <ul class="sidebar-menu">
+      <li class="nav-item">
+        <a class="nav-link" routerLink="/producto" routerLinkActive="active" data-bs-dismiss="offcanvas"
+          data-bs-target="#sidebarOffcanvas">
+          <i class="bi bi-box-seam"></i>
+          <span>Productos</span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" routerLink="/categoria" routerLinkActive="active" data-bs-dismiss="offcanvas"
+          data-bs-target="#sidebarOffcanvas">
+          <i class="bi bi-tags"></i>
+          <span>Categorías</span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" routerLink="/almacen" routerLinkActive="active" data-bs-dismiss="offcanvas"
+          data-bs-target="#sidebarOffcanvas">
+          <i class="bi bi-building"></i>
+          <span>Almacenes</span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" routerLink="/proveedor" routerLinkActive="active" data-bs-dismiss="offcanvas"
+          data-bs-target="#sidebarOffcanvas">
+          <i class="bi bi-truck"></i>
+          <span>Proveedores</span>
+        </a>
+      </li>
+    </ul>
+
+    <!-- Categoría 3: Administración y Ajustes -->
+    <div class="sidebar-category-title">Administración</div>
+    <ul class="sidebar-menu">
+      <li class="nav-item">
+        <a class="nav-link" routerLink="/usuario" routerLinkActive="active" data-bs-dismiss="offcanvas"
+          data-bs-target="#sidebarOffcanvas">
+          <i class="bi bi-shield-lock"></i>
+          <span>Usuarios</span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" routerLink="/moneda" routerLinkActive="active" data-bs-dismiss="offcanvas"
+          data-bs-target="#sidebarOffcanvas">
+          <i class="bi bi-cash-stack"></i>
+          <span>Monedas</span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" routerLink="/metodo-pago" routerLinkActive="active" data-bs-dismiss="offcanvas"
+          data-bs-target="#sidebarOffcanvas">
+          <i class="bi bi-credit-card"></i>
+          <span>Métodos de Pago</span>
+        </a>
+      </li>
+    </ul>
+
   </div>
-</nav>
+
+  <!-- Pie de Sidebar: Perfil de usuario y Logout -->
+  <div class="sidebar-footer">
+
+
+    <button class="btn btn-outline-light btn-logout" (click)="logout()">
+      <i class="bi bi-box-arrow-right"></i>
+      <span>Cerrar Sesión</span>
+    </button>
+  </div>
+
+</div>

@@ -8,18 +8,18 @@ Este servicio expone la lógica de negocio y el acceso a datos necesarios para e
 ## Tecnologías
 
 - **Java**
-    - Versión: 21
+  - Versión: 21
 - **Spring Boot**
-    - `spring-boot-starter-web` (API REST)
-    - `spring-boot-starter-validation` (Validaciones)
-    - `spring-boot-starter-security` (Seguridad y autorización)
-    - `spring-boot-starter-data-jpa` (Acceso a base de datos)
+  - `spring-boot-starter-web` (API REST)
+  - `spring-boot-starter-validation` (Validaciones)
+  - `spring-boot-starter-security` (Seguridad y autorización)
+  - `spring-boot-starter-data-jpa` (Acceso a base de datos)
 - **JWT (Json Web Tokens)**
-    - `jjwt-api`, `jjwt-impl`, `jjwt-jackson` (versión 0.12.5)
+  - `jjwt-api`, `jjwt-impl`, `jjwt-jackson` (versión 0.12.5)
 - **Base de Datos**
-    - PostgreSQL
+  - PostgreSQL
 - **Gestión de dependencias**
-    - Maven (Wrapper: `mvnw`)
+  - Maven (Wrapper: `mvnw`)
 
 ---
 
@@ -76,9 +76,9 @@ Ubicado en `src/main/resources/application.properties`:
 | **Proveedores** | `GET` | `/api/v1/proveedores` | Listar todos los proveedores |
 | **Almacenes** | `GET` | `/api/v1/almacenes` | Listar todos los almacenes |
 | **Categorías** | `GET` | `/api/v1/categorias` | Listar categorías de productos |
-| **Monedas** | `GET` | `/api/v1/monedas` | Listar monedas configuradas |
+| **Monedas** | `GET` | `/api/v1/monedas/lista` | Listar todas las monedas configuradas para los selectores |
 | **Formas de Pago** | `GET` | `/api/v1/formas-pago` | Listar formas de pago |
-| **Estados Cotización**| `GET` | `/api/v1/estados-cotizacion` | Listar estados disponibles |
+| **Estados Cotización**| `GET` | `/api/v1/estados-cotizacion` | Listar estados disponibles en la base de datos |
 | **Inventario** | `GET` | `/api/v1/inventario` | Ver inventario consolidado |
 | **Personas** | `GET` | `/api/v1/personas` | Listar personas registradas |
 

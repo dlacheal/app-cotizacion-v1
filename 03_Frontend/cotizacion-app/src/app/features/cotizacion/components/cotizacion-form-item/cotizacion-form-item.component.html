@@ -1,19 +1,19 @@
-<div class="card border-0 shadow-sm bg-light my-3">
-  <div class="card-header bg-secondary text-white p-3 rounded-top">
-    <h6 class="mb-0 fw-semibold d-flex align-items-center">
-      <i class="bi bi-cart-plus-fill me-2 text-warning"></i>
+<div class="card my-3">
+  <div class="card-header d-flex align-items-center p-3">
+    <h6 class="mb-0 fw-bold text-dark d-flex align-items-center">
+      <i class="bi bi-cart-plus-fill me-2 text-primary"></i>
       Agregar Producto a la Cotización
     </h6>
   </div>
-  <div class="card-body p-4 bg-white border border-light-subtle rounded-bottom">
+  <div class="card-body p-4">
     <form (ngSubmit)="onSubmit()" #itemForm="ngForm" class="row g-3">
       
       <!-- Selector de Producto (Con Buscador Integrado Internamente) -->
       <div class="col-md-4 custom-product-dropdown position-relative">
-        <label for="idProducto" class="form-label fw-semibold text-secondary small">Seleccionar Producto *</label>
+        <label for="idProducto" class="form-label">Seleccionar Producto *</label>
         
         <div class="dropdown">
-          <button class="form-select text-start border border-secondary-subtle d-flex justify-content-between align-items-center bg-white py-2 px-3 shadow-none" 
+          <button class="form-select text-start d-flex justify-content-between align-items-center bg-white py-2 px-3 shadow-none" 
                   [class.is-invalid]="itemForm.submitted && !selectedProductoId"
                   type="button" (click)="toggleDropdown()" style="min-height: 38px;">
             <span>{{ getSelectedProductoLabel() }}</span>
@@ -27,8 +27,8 @@
             
             <!-- Buscador de texto dentro del combo -->
             <div class="input-group input-group-sm mb-2">
-              <span class="input-group-text bg-light border border-secondary-subtle"><i class="bi bi-search text-secondary"></i></span>
-              <input type="text" class="form-control border border-secondary-subtle" placeholder="Buscar producto por nombre..." [(ngModel)]="filtroProducto" name="filtroProducto" (click)="$event.stopPropagation()" />
+              <span class="input-group-text"><i class="bi bi-search text-secondary"></i></span>
+              <input type="text" class="form-control" placeholder="Buscar producto por nombre..." [(ngModel)]="filtroProducto" name="filtroProducto" (click)="$event.stopPropagation()" />
             </div>
             
             <div class="dropdown-divider"></div>
@@ -51,7 +51,7 @@
 
       <!-- Cantidad -->
       <div class="col-md-2">
-        <label for="cantidad" class="form-label fw-semibold text-secondary small">Cantidad *</label>
+        <label for="cantidad" class="form-label">Cantidad *</label>
         <input type="number" id="cantidad" name="cantidad" class="form-control" placeholder="Cant." [(ngModel)]="item.cantidad" required min="1" #cantidad="ngModel" [ngClass]="{'is-invalid': cantidad.touched && cantidad.invalid}" />
         @if (cantidad.touched && cantidad.invalid) {
           @if (cantidad.errors?.['required']) {
@@ -65,7 +65,7 @@
 
       <!-- Unidad Medida -->
       <div class="col-md-2">
-        <label for="unidadMedida" class="form-label fw-semibold text-secondary small">U. Medida *</label>
+        <label for="unidadMedida" class="form-label">U. Medida *</label>
         <input type="text" id="unidadMedida" name="unidadMedida" class="form-control" placeholder="Ej. UNIDAD, KG" [(ngModel)]="item.unidadMedida" required minlength="2" #unidadMedida="ngModel" [ngClass]="{'is-invalid': unidadMedida.touched && unidadMedida.invalid}" />
         @if (unidadMedida.touched && unidadMedida.invalid) {
           <div class="invalid-feedback">Mín. 2 carac.</div>
@@ -74,7 +74,7 @@
 
       <!-- Costo Unitario -->
       <div class="col-md-2">
-        <label for="costoUnitario" class="form-label fw-semibold text-secondary small">Costo Unitario (S/.) *</label>
+        <label for="costoUnitario" class="form-label">Costo Unitario *</label>
         <input type="number" step="0.01" id="costoUnitario" name="costoUnitario" class="form-control" placeholder="0.00" [(ngModel)]="item.costoUnitario" required min="0.01" #costoUnitario="ngModel" [ngClass]="{'is-invalid': costoUnitario.touched && costoUnitario.invalid}" />
         @if (costoUnitario.touched && costoUnitario.invalid) {
           <div class="invalid-feedback">Debe ser > 0.</div>
@@ -83,7 +83,7 @@
 
       <!-- Porcentaje Ganancia -->
       <div class="col-md-2">
-        <label for="porcentajeGanancia" class="form-label fw-semibold text-secondary small">% Ganancia *</label>
+        <label for="porcentajeGanancia" class="form-label">% Ganancia *</label>
         <div class="input-group">
           <input type="number" id="porcentajeGanancia" name="porcentajeGanancia" class="form-control" placeholder="20" [(ngModel)]="item.porcentajeGanancia" required min="0" #porcentajeGanancia="ngModel" [ngClass]="{'is-invalid': porcentajeGanancia.touched && porcentajeGanancia.invalid}" />
           <span class="input-group-text">%</span>

@@ -4,9 +4,10 @@
       <i class="bi bi-coin me-2 text-warning"></i>
       Monedas del Sistema
     </h5>
-    <div class="d-flex gap-2">
-      <span class="badge bg-secondary px-3 py-2 fs-6 fw-normal">{{ totalElements }} monedas</span>
-      <a class="btn btn-sm btn-success d-flex align-items-center gap-1" routerLink="/moneda/nueva">
+    <div class="d-flex align-items-center gap-3">
+      <span class="badge bg-light text-secondary border px-3 py-2 fw-semibold">{{ totalElements }}
+        monedas</span>
+      <a class="btn btn-sm btn-primary d-flex align-items-center gap-1" routerLink="/moneda/nueva">
         <i class="bi bi-plus-circle-fill"></i>
         Nueva Moneda
       </a>
@@ -25,34 +26,37 @@
         </thead>
         <tbody>
           @for (moneda of monedas; track moneda.idMoneda) {
-            <tr>
-              <td class="ps-3">
-                <a [routerLink]="['/moneda', moneda.idMoneda]" class="text-decoration-none">
-                  <span class="badge bg-light text-primary border border-primary-subtle py-2 px-3 fw-bold hover-shadow transition-all" style="cursor: pointer;">
-                    #{{ moneda.idMoneda }}
-                  </span>
-                </a>
-              </td>
-              <td>
-                <span class="badge bg-info-subtle text-info border border-info-subtle px-3 py-2 font-monospace fs-6">
-                  {{ moneda.codigo }}
+          <tr>
+            <td class="ps-3">
+              <a [routerLink]="['/moneda', moneda.idMoneda]" class="text-decoration-none">
+                <span
+                  class="badge bg-light text-primary border border-primary-subtle py-2 px-3 fw-bold hover-shadow transition-all"
+                  style="cursor: pointer;">
+                  #{{ moneda.idMoneda }}
                 </span>
-              </td>
-              <td class="text-muted">{{ moneda.descripcion || '-' }}</td>
-              <td class="text-center">
-                <button (click)="eliminarMoneda(moneda.idMoneda)" class="btn btn-sm btn-outline-danger d-inline-flex align-items-center gap-1 transition-all">
-                  <i class="bi bi-trash3-fill"></i>
-                  Eliminar
-                </button>
-              </td>
-            </tr>
+              </a>
+            </td>
+            <td>
+              <span class="badge bg-info-subtle text-info border border-info-subtle px-3 py-2 font-monospace fs-6">
+                {{ moneda.codigo }}
+              </span>
+            </td>
+            <td class="text-muted">{{ moneda.descripcion || '-' }}</td>
+            <td class="text-center">
+              <button (click)="eliminarMoneda(moneda.idMoneda)"
+                class="btn btn-sm btn-outline-danger d-inline-flex align-items-center gap-1 transition-all">
+                <i class="bi bi-trash3-fill"></i>
+                Eliminar
+              </button>
+            </td>
+          </tr>
           } @empty {
-            <tr>
-              <td colspan="4" class="text-center py-5 text-muted">
-                <i class="bi bi-cash-stack fs-1 d-block mb-2 text-secondary"></i>
-                No se encontraron monedas cargadas.
-              </td>
-            </tr>
+          <tr>
+            <td colspan="4" class="text-center py-5 text-muted">
+              <i class="bi bi-cash-stack fs-1 d-block mb-2 text-secondary"></i>
+              No se encontraron monedas cargadas.
+            </td>
+          </tr>
           }
         </tbody>
       </table>
@@ -60,34 +64,35 @@
 
     <!-- Paginación -->
     @if (totalPages > 1) {
-      <div class="d-flex align-items-center justify-content-between p-3 border-top bg-light rounded-bottom">
-        <span class="text-muted small">
-          Mostrando página <strong>{{ page + 1 }}</strong> de <strong>{{ totalPages }}</strong> (<strong>{{ totalElements }}</strong> registros en total)
-        </span>
-        <nav aria-label="Navegación de monedas">
-          <ul class="pagination pagination-sm mb-0">
-            <li class="page-item" [class.disabled]="page === 0">
-              <button class="page-link" (click)="anteriorPagina()" [disabled]="page === 0">
-                Anterior
-              </button>
-            </li>
-            
-            @for (p of paginas; track p) {
-              <li class="page-item" [class.active]="p === page">
-                <button class="page-link" (click)="irAPagina(p)">
-                  {{ p + 1 }}
-                </button>
-              </li>
-            }
+    <div class="d-flex align-items-center justify-content-between p-3 border-top bg-light rounded-bottom">
+      <span class="text-muted small">
+        Mostrando página <strong>{{ page + 1 }}</strong> de <strong>{{ totalPages }}</strong> (<strong>{{ totalElements
+          }}</strong> registros en total)
+      </span>
+      <nav aria-label="Navegación de monedas">
+        <ul class="pagination pagination-sm mb-0">
+          <li class="page-item" [class.disabled]="page === 0">
+            <button class="page-link" (click)="anteriorPagina()" [disabled]="page === 0">
+              Anterior
+            </button>
+          </li>
 
-            <li class="page-item" [class.disabled]="page === totalPages - 1">
-              <button class="page-link" (click)="siguientePagina()" [disabled]="page === totalPages - 1">
-                Siguiente
-              </button>
-            </li>
-          </ul>
-        </nav>
-      </div>
+          @for (p of paginas; track p) {
+          <li class="page-item" [class.active]="p === page">
+            <button class="page-link" (click)="irAPagina(p)">
+              {{ p + 1 }}
+            </button>
+          </li>
+          }
+
+          <li class="page-item" [class.disabled]="page === totalPages - 1">
+            <button class="page-link" (click)="siguientePagina()" [disabled]="page === totalPages - 1">
+              Siguiente
+            </button>
+          </li>
+        </ul>
+      </nav>
+    </div>
     }
   </div>
 </div>
