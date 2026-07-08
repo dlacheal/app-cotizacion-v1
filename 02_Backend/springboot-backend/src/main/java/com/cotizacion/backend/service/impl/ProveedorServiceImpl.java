@@ -4,6 +4,8 @@ import com.cotizacion.backend.persistence.entity.*;
 import com.cotizacion.backend.persistence.repository.*;
 import com.cotizacion.backend.service.interfaces.ProveedorService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
@@ -17,6 +19,9 @@ public class ProveedorServiceImpl implements ProveedorService {
 
     @Override
     public List<Proveedor> findAll() { return repository.findAll(); }
+
+    @Override
+    public Page<Proveedor> findAll(Pageable pageable) { return repository.findAll(pageable); }
 
     @Override
     public Optional<Proveedor> findById(Long id) { return repository.findById(id); }

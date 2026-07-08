@@ -9,6 +9,9 @@ import com.cotizacion.backend.persistence.entity.Almacen;
 import com.cotizacion.backend.service.interfaces.AlmacenService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -21,12 +24,15 @@ import java.util.List;
 public class AlmacenController {
 
     private final AlmacenService almacenService;
-    // private final AlmacenMapper mapper; // Inyectar mapper real
 
     @GetMapping
-    public ResponseEntity<List<Almacen>> listarAlmacenes() {
-        // Best Practice: Deberías devolver List<AlmacenResponseDTO> usando:
-        // return ResponseEntity.ok(almacenService.findAll().stream().map(mapper::toDto).toList());
+    public ResponseEntity<Page<Almacen>> listarAlmacenes(
+            @PageableDefault(size = 10, sort = "idAlmacen") Pageable pageable) {
+        return ResponseEntity.ok(almacenService.findAll(pageable));
+    }
+
+    @GetMapping("/lista")
+    public ResponseEntity<List<Almacen>> listarTodas() {
         return ResponseEntity.ok(almacenService.findAll());
     }
 

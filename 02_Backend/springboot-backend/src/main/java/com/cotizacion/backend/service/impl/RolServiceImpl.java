@@ -37,6 +37,10 @@ public class RolServiceImpl implements RolService {
                     return repository.save(nuevoRol);
                 });
 
+        if (usuario.getRoles() == null) {
+            usuario.setRoles(new java.util.ArrayList<>());
+        }
+
         if (!usuario.getRoles().contains(rol)) {
             usuario.getRoles().add(rol);
             usuarioRepository.save(usuario);
@@ -51,7 +55,9 @@ public class RolServiceImpl implements RolService {
         Usuario usuario = usuarioRepository.findById(idUsuario)
                 .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
 
-        usuario.getRoles().removeIf(rol -> rol.getNombre().equals(roleName));
-        usuarioRepository.save(usuario);
+        if (usuario.getRoles() != null) {
+            usuario.getRoles().removeIf(rol -> rol.getNombre().equals(roleName));
+            usuarioRepository.save(usuario);
+        }
     }
 }
