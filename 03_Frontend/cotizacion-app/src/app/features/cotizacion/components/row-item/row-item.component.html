@@ -1,17 +1,18 @@
-<td>{{ item.idDetalle }}</td>
-<td>{{ item.productoNombre }}</td>
-<td>{{ item.cantidad }}</td>
-<td>{{ item.unidadMedida }}</td>
-<td>{{ item.costoUnitario }}</td>
-<td>{{ item.porcentajeGanancia }}</td>
-<td>{{ item.precioVentaUnit }}</td>
-<td>{{ item.subTotal }}</td>
-<td>{{ item.impuestoMonto }}</td>
-<td>{{ item.totalLinea }}</td>
+<td data-label="ID" class="ps-3 text-muted">#{{ item.idDetalle }}</td>
+<td data-label="Nombre" class="fw-semibold text-dark">{{ item.productoNombre }}</td>
+<td data-label="Cantidad" class="text-secondary fw-semibold">{{ item.cantidad }}</td>
+<td data-label="UM" class="text-muted"><span class="badge bg-light text-secondary border">{{ item.unidadMedida }}</span></td>
+<td data-label="P. Costo U." class="text-secondary">{{ item.costoUnitario }}</td>
+<td data-label="Ganancia" class="text-secondary">{{ item.porcentajeGanancia }}%</td>
+<td data-label="P. Venta U." class="text-secondary">{{ item.precioVentaUnit }}</td>
+<td data-label="Subtotal" class="text-secondary fw-semibold">{{ item.subTotal }}</td>
+<td data-label="IGV" class="text-secondary">{{ item.impuestoMonto }}</td>
+<td data-label="Monto" class="fw-bold text-dark">{{ item.totalLinea }}</td>
 @if (isNueva) {
-<td>
-    <button class="btn btn-danger btn-sm" (click)="onRemove(item.idDetalle)">
-        Eliminar
+<td data-label="Acciones" class="text-center">
+    <button class="btn btn-sm btn-outline-danger d-inline-flex align-items-center gap-1 py-1 px-2.5" (click)="onRemove(item.idDetalle)">
+        <i class="bi bi-trash-fill"></i>
+        <span>Eliminar</span>
     </button>
 </td>
 }

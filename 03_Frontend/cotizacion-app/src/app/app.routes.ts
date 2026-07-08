@@ -21,10 +21,14 @@ import { AlmacenFormComponent } from './features/almacen/components/almacen-form
 import { MonedaFormComponent } from './features/moneda/components/moneda-form/moneda-form.component';
 import { MetodoPagoComponent } from './features/metodo-pago/metodo-pago.component';
 import { MetodoPagoFormComponent } from './features/metodo-pago/components/metodo-pago-form/metodo-pago-form.component';
+import { DashboardComponent } from './features/dashboard/dashboard.component';
+import { ReportesComponent } from './features/reportes/reportes.component';
 
 export const routes: Routes = [
-  { path: '', redirectTo: 'categoria', pathMatch: 'full' },
+  { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
   { path: 'login', component: LoginComponent },
+  { path: 'dashboard', component: DashboardComponent, canActivate: [authGuard] },
+  { path: 'reportes', component: ReportesComponent, canActivate: [authGuard] },
   { path: 'categoria', component: CategoriaComponent, canActivate: [authGuard] },
   { path: 'categoria/nueva', component: CategoriaFormComponent, canActivate: [authGuard] },
   { path: 'categoria/:id', component: CategoriaFormComponent, canActivate: [authGuard] },

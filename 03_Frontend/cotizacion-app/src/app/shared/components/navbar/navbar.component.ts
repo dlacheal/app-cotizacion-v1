@@ -12,7 +12,7 @@ export class NavbarComponent {
   public readonly authService = inject(AuthService);
   private readonly router = inject(Router);
 
-  public readonly title = 'Cotizador LTS';
+  public readonly title = 'L T S';
 
   logout(): void {
     this.authService.logout();
