@@ -29,15 +29,13 @@ ALTER TABLE forma_pago ADD CONSTRAINT pk_forma_pago PRIMARY KEY (id_forma_pago);
 ALTER TABLE estado_cotizacion ADD CONSTRAINT pk_estado_cotizacion PRIMARY KEY (id_estado);
 ALTER TABLE estado_cotizacion ADD CONSTRAINT uq_estado_cotizacion_nombre UNIQUE (nombre);
 
--- Usuario
-ALTER TABLE Usuario ADD CONSTRAINT USUARIO_PK PRIMARY KEY (ID_USUARIO);
+-- Usuario (PK ya definida inline en 02_tables.sql)
 ALTER TABLE Usuario ADD CONSTRAINT UNIQUE_USUARIO_USERNAME UNIQUE (USERNAME);
 ALTER TABLE Usuario ADD CONSTRAINT FK_USUARIO_PERSONA FOREIGN KEY (PERSONA_ID) REFERENCES Persona(ID_PERSONA);
 
--- Authority
-ALTER TABLE Authority ADD CONSTRAINT AUTHORITY_PK PRIMARY KEY (ID_AUTHORITY);
-ALTER TABLE Authority ADD CONSTRAINT UNIQUE_AUTHORITY_USUARIO_TIPO UNIQUE (USUARIO_ID, TIPO);
-ALTER TABLE Authority ADD CONSTRAINT FK_AUTHORITY_USUARIO FOREIGN KEY (USUARIO_ID) REFERENCES Usuario(ID_USUARIO);
+-- Rol (PK ya definida inline en 02_tables.sql)
+
+-- Usuario_Rol (PK y FKs ya definidas inline en 02_tables.sql)
 
 -- Producto
 ALTER TABLE producto ADD CONSTRAINT pk_producto PRIMARY KEY (id_producto);

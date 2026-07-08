@@ -1,0 +1,29 @@
+<h5>Detalles de la cotización</h5>
+@if(detalles.length > 0) {
+<table class="table table-striped table-bordered table-hover table-sm">
+    <thead class="table-dark thead-inverse bg-dark text-white">
+        <tr>
+            <th>ID</th>
+            <th>Nombre</th>
+            <th>Cantidad</th>
+            <th>UM</th>
+            <th>Precio Costo U.</th>
+            <th>Porcentaje Gan.</th>
+            <th>Precio Venta U.</th>
+            <th>Subtotal</th>
+            <th>IGV</th>
+            <th>Monto</th>
+            @if (isNueva) {
+                <th>Eliminar</th>
+            }
+        </tr>
+    </thead>
+    <tbody>
+        @for (detalle of detalles; track detalle.idDetalle) {
+        <tr row-item [item]="detalle" [isNueva]="isNueva" (removeEventEmitter)="onRemove($event)"></tr>
+        }
+    </tbody>
+</table>
+} @else {
+<div class="alert alert-warning">No hay detalles para mostrar.</div>
+}

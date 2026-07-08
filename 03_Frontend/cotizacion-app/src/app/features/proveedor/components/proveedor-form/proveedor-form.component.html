@@ -1,0 +1,189 @@
+<div class="container py-4">
+    <div class="row">
+        <div class="col-lg-6 col-md-8 mx-auto">
+            <div class="card border-0 shadow-sm bg-white">
+                <div class="card-header bg-primary text-white p-3 rounded-top d-flex align-items-center justify-content-between">
+                    <h5 class="mb-0 d-flex align-items-center">
+                        <i class="bi me-2" [ngClass]="isEditMode ? 'bi-pencil-square' : 'bi-truck'"></i>
+                        {{ isEditMode ? 'Editar Proveedor' : 'Agregar Proveedor' }}
+                    </h5>
+                    <a class="btn btn-sm btn-outline-light d-flex align-items-center gap-1" routerLink="/proveedor">
+                        <i class="bi bi-arrow-left"></i>
+                        Volver
+                    </a>
+                </div>
+                <div class="card-body p-4 border-start border-end border-bottom rounded-bottom">
+
+                    <!-- Mensaje de éxito -->
+                    @if (successMessage) {
+                    <div class="alert alert-success d-flex align-items-center border-0 shadow-sm mb-3" role="alert">
+                        <i class="bi bi-check-circle-fill me-2 fs-5"></i>
+                        <div>{{ successMessage }}</div>
+                    </div>
+                    }
+
+                    <!-- Mensaje de error -->
+                    @if (errorMessage) {
+                    <div class="alert alert-danger d-flex align-items-center border-0 shadow-sm mb-3" role="alert">
+                        <i class="bi bi-exclamation-triangle-fill me-2 fs-5"></i>
+                        <div>{{ errorMessage }}</div>
+                    </div>
+                    }
+
+                    <!-- Formulario -->
+                    <form [formGroup]="proveedorForm" (ngSubmit)="onSubmit()" novalidate>
+
+                        <!-- Campo: Nombre -->
+                        <div class="mb-3">
+                            <label for="nombre" class="form-label fw-semibold text-secondary small">Nombre o Razón Social *</label>
+                            <div class="input-group has-validation">
+                                <span class="input-group-text bg-light border-end-0">
+                                    <i class="bi bi-shop text-muted"></i>
+                                </span>
+                                <input type="text" id="nombre" formControlName="nombre" class="form-control border-start-0"
+                                    placeholder="Ej. Distribuidora Lima SAC" [ngClass]="{
+                                    'is-invalid': proveedorForm.get('nombre')?.touched && proveedorForm.get('nombre')?.invalid,
+                                    'is-valid': proveedorForm.get('nombre')?.touched && proveedorForm.get('nombre')?.valid
+                                    }" />
+
+                                @if (proveedorForm.get('nombre')?.touched && proveedorForm.get('nombre')?.errors?.['required'])
+                                {
+                                <div class="invalid-feedback">
+                                    El nombre es obligatorio.
+                                </div>
+                                }
+                                @if (proveedorForm.get('nombre')?.touched && proveedorForm.get('nombre')?.errors?.['minlength'])
+                                {
+                                <div class="invalid-feedback">
+                                    El nombre debe tener al menos 3 caracteres.
+                                </div>
+                                }
+                                @if (proveedorForm.get('nombre')?.touched && proveedorForm.get('nombre')?.errors?.['maxlength'])
+                                {
+                                <div class="invalid-feedback">
+                                    El nombre no puede exceder los 150 caracteres.
+                                </div>
+                                }
+                            </div>
+                        </div>
+
+                        <!-- Campo: RUC -->
+                        <div class="mb-3">
+                            <label for="ruc" class="form-label fw-semibold text-secondary small">Número de RUC * (11 dígitos)</label>
+                            <div class="input-group has-validation">
+                                <span class="input-group-text bg-light border-end-0">
+                                    <i class="bi bi-card-heading text-muted"></i>
+                                </span>
+                                <input type="text" id="ruc" formControlName="ruc" class="form-control border-start-0"
+                                    placeholder="Ej. 20123456789" [ngClass]="{
+                                    'is-invalid': proveedorForm.get('ruc')?.touched && proveedorForm.get('ruc')?.invalid,
+                                    'is-valid': proveedorForm.get('ruc')?.touched && proveedorForm.get('ruc')?.valid
+                                    }" />
+
+                                @if (proveedorForm.get('ruc')?.touched && proveedorForm.get('ruc')?.errors?.['required'])
+                                {
+                                <div class="invalid-feedback">
+                                    El número de RUC es obligatorio.
+                                </div>
+                                }
+                                @if (proveedorForm.get('ruc')?.touched && proveedorForm.get('ruc')?.errors?.['pattern'])
+                                {
+                                <div class="invalid-feedback">
+                                    Debe ingresar un número de RUC válido de 11 dígitos.
+                                </div>
+                                }
+                            </div>
+                        </div>
+
+                        <!-- Campo: Teléfono -->
+                        <div class="mb-3">
+                            <label for="telefono" class="form-label fw-semibold text-secondary small">Teléfono (Opcional)</label>
+                            <div class="input-group has-validation">
+                                <span class="input-group-text bg-light border-end-0">
+                                    <i class="bi bi-telephone-fill text-muted"></i>
+                                </span>
+                                <input type="text" id="telefono" formControlName="telefono" class="form-control border-start-0"
+                                    placeholder="Ej. 01-555-1234" [ngClass]="{
+                                    'is-invalid': proveedorForm.get('telefono')?.touched && proveedorForm.get('telefono')?.invalid,
+                                    'is-valid': proveedorForm.get('telefono')?.touched && proveedorForm.get('telefono')?.valid
+                                    }" />
+
+                                @if (proveedorForm.get('telefono')?.touched && proveedorForm.get('telefono')?.errors?.['maxlength'])
+                                {
+                                <div class="invalid-feedback">
+                                    El teléfono no puede exceder los 30 caracteres.
+                                </div>
+                                }
+                            </div>
+                        </div>
+
+                        <!-- Campo: Email -->
+                        <div class="mb-3">
+                            <label for="email" class="form-label fw-semibold text-secondary small">Email (Opcional)</label>
+                            <div class="input-group has-validation">
+                                <span class="input-group-text bg-light border-end-0">
+                                    <i class="bi bi-envelope-fill text-muted"></i>
+                                </span>
+                                <input type="email" id="email" formControlName="email" class="form-control border-start-0"
+                                    placeholder="Ej. contacto@distribuidoralima.com" [ngClass]="{
+                                    'is-invalid': proveedorForm.get('email')?.touched && proveedorForm.get('email')?.invalid,
+                                    'is-valid': proveedorForm.get('email')?.touched && proveedorForm.get('email')?.valid
+                                    }" />
+
+                                @if (proveedorForm.get('email')?.touched && proveedorForm.get('email')?.errors?.['email'])
+                                {
+                                <div class="invalid-feedback">
+                                    Ingrese un formato de email válido.
+                                </div>
+                                }
+                                @if (proveedorForm.get('email')?.touched && proveedorForm.get('email')?.errors?.['maxlength'])
+                                {
+                                <div class="invalid-feedback">
+                                    El email no puede exceder los 150 caracteres.
+                                </div>
+                                }
+                            </div>
+                        </div>
+
+                        <!-- Campo: Dirección -->
+                        <div class="mb-4">
+                            <label for="direccion" class="form-label fw-semibold text-secondary small">Dirección (Opcional)</label>
+                            <div class="input-group has-validation">
+                                <span class="input-group-text bg-light border-end-0 align-items-start pt-2">
+                                    <i class="bi bi-geo-alt-fill text-muted"></i>
+                                </span>
+                                <textarea id="direccion" formControlName="direccion" rows="3"
+                                    class="form-control border-start-0" placeholder="Ej. Calle Los Cedros 456..."
+                                    [ngClass]="{
+                                    'is-invalid': proveedorForm.get('direccion')?.touched && proveedorForm.get('direccion')?.invalid,
+                                    'is-valid': proveedorForm.get('direccion')?.touched && proveedorForm.get('direccion')?.valid
+                                    }"></textarea>
+
+                                @if (proveedorForm.get('direccion')?.touched && proveedorForm.get('direccion')?.errors?.['maxlength'])
+                                {
+                                <div class="invalid-feedback">
+                                    La dirección no puede exceder los 250 caracteres.
+                                </div>
+                                }
+                            </div>
+                        </div>
+
+                        <!-- Botón de Envío -->
+                        <button type="submit"
+                            class="btn btn-primary w-100 py-2.5 fw-semibold d-flex align-items-center justify-content-center transition-all"
+                            [disabled]="isSubmitting">
+                            @if (isSubmitting) {
+                            <span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                            Guardando...
+                            } @else {
+                            <i class="bi bi-save-fill me-2"></i>
+                            {{ isEditMode ? 'Actualizar Proveedor' : 'Registrar Proveedor' }}
+                            }
+                        </button>
+
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

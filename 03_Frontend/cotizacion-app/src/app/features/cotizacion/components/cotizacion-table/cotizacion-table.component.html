@@ -1,0 +1,112 @@
+<div class="card bg-light border-0 shadow-sm">
+  <div class="card-header bg-dark text-white d-flex align-items-center justify-content-between p-3 rounded-top">
+    <h5 class="mb-0 d-flex align-items-center">
+      <i class="bi bi-file-earmark-spreadsheet me-2 text-warning"></i>
+      Listado de Cotizaciones
+    </h5>
+    <div class="d-flex align-items-center gap-3">
+      <span class="badge bg-secondary px-3 py-2 fs-6 fw-normal">{{ totalElements }} cotizaciones</span>
+      <a class="btn btn-sm btn-success d-flex align-items-center gap-1" routerLink="/cotizacion/nueva">
+        <i class="bi bi-plus-circle-fill"></i>
+        Nueva Cotización
+      </a>
+    </div>
+  </div>
+  <div class="card-body p-0 bg-white border-start border-end border-bottom rounded-bottom">
+    <div class="table-responsive">
+      <table class="table table-striped table-hover align-middle mb-0">
+        <thead class="table-light text-uppercase">
+          <tr>
+            <th scope="col" class="ps-3" style="width: 10%">ID</th>
+            <th scope="col" style="width: 20%">Fecha</th>
+            <th scope="col" style="width: 25%">Cliente</th>
+            <th scope="col" style="width: 15%">Total General</th>
+            <th scope="col" style="width: 15%">Estado</th>
+            <th scope="col" class="text-center" style="width: 15%">Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (cotizacion of cotizaciones; track cotizacion.idCotizacion) {
+          <tr>
+            <td class="ps-3">
+              <a [routerLink]="['/cotizacion', cotizacion.idCotizacion]" class="badge bg-light text-primary border border-primary-subtle py-2 px-3 fw-bold text-decoration-none hover-shadow cursor-pointer">
+                #{{ cotizacion.idCotizacion }}
+              </a>
+            </td>
+            <td class="text-muted">{{ cotizacion.fecha | date:'yyyy-MM-dd HH:mm' }}</td>
+            <td class="fw-semibold">{{ cotizacion.clienteNombre }}</td>
+            <td>
+              <span class="text-success font-monospace fw-bold fs-6">
+                {{ cotizacion.totalGeneral | currency:(cotizacion.monedaCodigo || 'PEN'):'symbol':'1.2-2' }}
+              </span>
+            </td>
+            <td>
+              <span class="badge px-3 py-2 rounded-pill fs-7 fw-bold"
+                [class.bg-success-subtle]="cotizacion.estadoNombre === 'Aprobada' || cotizacion.estadoNombre === 'APROBADO'"
+                [class.text-success]="cotizacion.estadoNombre === 'Aprobada' || cotizacion.estadoNombre === 'APROBADO'"
+                [class.bg-warning-subtle]="cotizacion.estadoNombre === 'Borrador' || cotizacion.estadoNombre === 'Enviada' || cotizacion.estadoNombre === 'PENDIENTE'"
+                [class.text-warning]="cotizacion.estadoNombre === 'Borrador' || cotizacion.estadoNombre === 'Enviada' || cotizacion.estadoNombre === 'PENDIENTE'"
+                [class.bg-danger-subtle]="cotizacion.estadoNombre === 'Rechazada' || cotizacion.estadoNombre === 'RECHAZADO'"
+                [class.text-danger]="cotizacion.estadoNombre === 'Rechazada' || cotizacion.estadoNombre === 'RECHAZADO'">
+                {{ cotizacion.estadoNombre }}
+              </span>
+            </td>
+            <td class="text-center">
+              <div class="d-flex align-items-center justify-content-center gap-2">
+                <a class="btn btn-sm btn-outline-primary d-inline-flex align-items-center gap-1"
+                  [routerLink]="['/cotizacion', cotizacion.idCotizacion]">
+                  <i class="bi bi-eye"></i>
+                  Detalle
+                </a>
+                <button (click)="eliminarCotizacion(cotizacion.idCotizacion)" class="btn btn-sm btn-outline-danger d-inline-flex align-items-center gap-1">
+                  <i class="bi bi-trash3-fill"></i>
+                  Eliminar
+                </button>
+              </div>
+            </td>
+          </tr>
+          } @empty {
+          <tr>
+            <td colspan="6" class="text-center py-5 text-muted">
+              <i class="bi bi-file-earmark-x fs-1 d-block mb-2 text-secondary"></i>
+              No se encontraron cotizaciones registradas.
+            </td>
+          </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Paginación -->
+    @if (totalPages > 1) {
+      <div class="d-flex align-items-center justify-content-between p-3 border-top bg-light rounded-bottom">
+        <span class="text-muted small">
+          Mostrando página <strong>{{ page + 1 }}</strong> de <strong>{{ totalPages }}</strong> (<strong>{{ totalElements }}</strong> registros en total)
+        </span>
+        <nav aria-label="Navegación de cotizaciones">
+          <ul class="pagination pagination-sm mb-0">
+            <li class="page-item" [class.disabled]="page === 0">
+              <button class="page-link" (click)="anteriorPagina()" [disabled]="page === 0">
+                Anterior
+              </button>
+            </li>
+            
+            @for (p of paginas; track p) {
+              <li class="page-item" [class.active]="p === page">
+                <button class="page-link" (click)="irAPagina(p)">
+                  {{ p + 1 }}
+                </button>
+              </li>
+            }
+
+            <li class="page-item" [class.disabled]="page === totalPages - 1">
+              <button class="page-link" (click)="siguientePagina()" [disabled]="page === totalPages - 1">
+                Siguiente
+              </button>
+            </li>
+          </ul>
+        </nav>
+      </div>
+    }
+  </div>
+</div>

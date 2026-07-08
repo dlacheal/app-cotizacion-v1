@@ -1,0 +1,105 @@
+<div class="card bg-light border-0 shadow-sm">
+  <div class="card-header bg-dark text-white d-flex align-items-center justify-content-between p-3 rounded-top">
+    <h5 class="mb-0 d-flex align-items-center">
+      <i class="bi bi-box-seam-fill me-2 text-warning"></i>
+      Productos
+    </h5>
+    <div class="d-flex gap-2">
+      <span class="badge bg-secondary px-3 py-2 fs-6 fw-normal">{{ totalElements }} ítems</span>
+      <a class="btn btn-sm btn-success d-flex align-items-center gap-1" routerLink="/producto/nuevo">
+        <i class="bi bi-plus-circle-fill"></i>
+        Nuevo Producto
+      </a>
+    </div>
+  </div>
+  <div class="card-body p-0 bg-white border-start border-end border-bottom rounded-bottom">
+    <div class="table-responsive">
+      <table class="table table-striped table-hover align-middle mb-0">
+        <thead class="table-light text-uppercase">
+          <tr>
+            <th scope="col" class="ps-3" style="width: 10%">ID</th>
+            <th scope="col" style="width: 25%">Nombre</th>
+            <th scope="col" style="width: 20%">Descripción</th>
+            <th scope="col" style="width: 15%">Categoría</th>
+            <th scope="col" style="width: 15%">Proveedor</th>
+            <th scope="col" style="width: 10%">Precio Base</th>
+            <th scope="col" style="width: 10%">Estado</th>
+            <th scope="col" class="text-center" style="width: 12%">Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (producto of productos; track producto.idProducto) {
+            <tr>
+              <td class="ps-3">
+                <a [routerLink]="['/producto', producto.idProducto]" class="text-decoration-none">
+                  <span class="badge bg-light text-primary border border-primary-subtle py-2 px-3 fw-bold hover-shadow transition-all" style="cursor: pointer;">
+                    #{{ producto.idProducto }}
+                  </span>
+                </a>
+              </td>
+              <td class="fw-semibold text-primary">{{ producto.nombre }}</td>
+              <td class="text-muted small">{{ producto.descripcion || 'Sin descripción' }}</td>
+              <td>
+                <span class="badge bg-info-subtle text-info border border-info-subtle px-2.5 py-1.5 rounded">
+                  {{ producto.categoriaNombre }}
+                </span>
+              </td>
+              <td class="text-muted small">{{ producto.proveedorNombre }}</td>
+              <td class="fw-semibold text-dark">{{ producto.precioBase | currency:'PEN':'symbol':'1.2-2' }}</td>
+              <td>
+                <span class="badge px-2.5 py-1.5 rounded" [class.bg-success-subtle]="producto.activo" [class.text-success]="producto.activo" [class.bg-danger-subtle]="!producto.activo" [class.text-danger]="!producto.activo" [class.border]="true" [class.border-success-subtle]="producto.activo" [class.border-danger-subtle]="!producto.activo">
+                  {{ producto.activo ? 'Activo' : 'Inactivo' }}
+                </span>
+              </td>
+              <td class="text-center">
+                <button (click)="eliminarProducto(producto.idProducto)" class="btn btn-sm btn-outline-danger d-inline-flex align-items-center gap-1 transition-all" [disabled]="!producto.activo">
+                  <i class="bi bi-trash3-fill"></i>
+                  Eliminar
+                </button>
+              </td>
+            </tr>
+          } @empty {
+            <tr>
+              <td colspan="8" class="text-center py-5 text-muted">
+                <i class="bi bi-box-seam fs-1 d-block mb-2 text-secondary"></i>
+                No se encontraron productos cargados.
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Paginación -->
+    @if (totalPages > 1) {
+      <div class="d-flex align-items-center justify-content-between p-3 border-top bg-light rounded-bottom">
+        <span class="text-muted small">
+          Mostrando página <strong>{{ page + 1 }}</strong> de <strong>{{ totalPages }}</strong> (<strong>{{ totalElements }}</strong> registros en total)
+        </span>
+        <nav aria-label="Navegación de productos">
+          <ul class="pagination pagination-sm mb-0">
+            <li class="page-item" [class.disabled]="page === 0">
+              <button class="page-link" (click)="anteriorPagina()" [disabled]="page === 0">
+                Anterior
+              </button>
+            </li>
+            
+            @for (p of paginas; track p) {
+              <li class="page-item" [class.active]="p === page">
+                <button class="page-link" (click)="irAPagina(p)">
+                  {{ p + 1 }}
+                </button>
+              </li>
+            }
+
+            <li class="page-item" [class.disabled]="page === totalPages - 1">
+              <button class="page-link" (click)="siguientePagina()" [disabled]="page === totalPages - 1">
+                Siguiente
+              </button>
+            </li>
+          </ul>
+        </nav>
+      </div>
+    }
+  </div>
+</div>

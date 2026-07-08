@@ -1,0 +1,193 @@
+<div class="container py-4">
+    <div class="row">
+        <div class="col-lg-6 col-md-8 mx-auto">
+            <div class="card border-0 shadow-sm bg-white">
+                <div class="card-header bg-primary text-white p-3 rounded-top d-flex align-items-center justify-content-between">
+                    <h5 class="mb-0 d-flex align-items-center">
+                        <i class="bi me-2" [ngClass]="isEditMode ? 'bi-pencil-square' : 'bi-box-seam-fill'"></i>
+                        {{ isEditMode ? 'Editar Producto' : 'Agregar Producto' }}
+                    </h5>
+                    <a class="btn btn-sm btn-outline-light d-flex align-items-center gap-1" routerLink="/producto">
+                        <i class="bi bi-arrow-left"></i>
+                        Volver
+                    </a>
+                </div>
+                <div class="card-body p-4 border-start border-end border-bottom rounded-bottom">
+
+                    <!-- Mensaje de éxito -->
+                    @if (successMessage) {
+                    <div class="alert alert-success d-flex align-items-center border-0 shadow-sm mb-3" role="alert">
+                        <i class="bi bi-check-circle-fill me-2 fs-5"></i>
+                        <div>{{ successMessage }}</div>
+                    </div>
+                    }
+
+                    <!-- Mensaje de error -->
+                    @if (errorMessage) {
+                    <div class="alert alert-danger d-flex align-items-center border-0 shadow-sm mb-3" role="alert">
+                        <i class="bi bi-exclamation-triangle-fill me-2 fs-5"></i>
+                        <div>{{ errorMessage }}</div>
+                    </div>
+                    }
+
+                    <!-- Formulario -->
+                    <form [formGroup]="productoForm" (ngSubmit)="onSubmit()" novalidate>
+
+                        <!-- Campo: Nombre -->
+                        <div class="mb-3">
+                            <label for="nombre" class="form-label fw-semibold text-secondary small">Nombre del Producto *</label>
+                            <div class="input-group has-validation">
+                                <span class="input-group-text bg-light border-end-0">
+                                    <i class="bi bi-box-seam text-muted"></i>
+                                </span>
+                                <input type="text" id="nombre" formControlName="nombre" class="form-control border-start-0"
+                                    placeholder="Ej. Laptop Dell Latitude, Silla Gerencial" [ngClass]="{
+                                    'is-invalid': productoForm.get('nombre')?.touched && productoForm.get('nombre')?.invalid,
+                                    'is-valid': productoForm.get('nombre')?.touched && productoForm.get('nombre')?.valid
+                                    }" />
+
+                                @if (productoForm.get('nombre')?.touched && productoForm.get('nombre')?.errors?.['required'])
+                                {
+                                <div class="invalid-feedback">
+                                    El nombre del producto es obligatorio.
+                                </div>
+                                }
+                                @if (productoForm.get('nombre')?.touched && productoForm.get('nombre')?.errors?.['minlength'])
+                                {
+                                <div class="invalid-feedback">
+                                    El nombre debe tener al menos 3 caracteres.
+                                </div>
+                                }
+                                @if (productoForm.get('nombre')?.touched && productoForm.get('nombre')?.errors?.['maxlength'])
+                                {
+                                <div class="invalid-feedback">
+                                    El nombre no puede exceder los 150 caracteres.
+                                </div>
+                                }
+                            </div>
+                        </div>
+
+                        <!-- Campo: Categoría (Dropdown Select) -->
+                        <div class="mb-3">
+                            <label for="idCategoria" class="form-label fw-semibold text-secondary small">Categoría *</label>
+                            <div class="input-group has-validation">
+                                <span class="input-group-text bg-light border-end-0">
+                                    <i class="bi bi-tags-fill text-muted"></i>
+                                </span>
+                                <select id="idCategoria" formControlName="idCategoria" class="form-select border-start-0"
+                                    [ngClass]="{
+                                    'is-invalid': productoForm.get('idCategoria')?.touched && productoForm.get('idCategoria')?.invalid,
+                                    'is-valid': productoForm.get('idCategoria')?.touched && productoForm.get('idCategoria')?.valid
+                                    }">
+                                    <option value="" disabled selected>Selecciona una categoría...</option>
+                                    @for (categoria of categorias; track categoria.idCategoria) {
+                                        <option [ngValue]="categoria.idCategoria">{{ categoria.nombre }}</option>
+                                    }
+                                </select>
+
+                                @if (productoForm.get('idCategoria')?.touched && productoForm.get('idCategoria')?.errors?.['required'])
+                                {
+                                <div class="invalid-feedback">
+                                    Debe seleccionar una categoría.
+                                </div>
+                                }
+                            </div>
+                        </div>
+
+                        <!-- Campo: Proveedor (Dropdown Select) -->
+                        <div class="mb-3">
+                            <label for="idProveedor" class="form-label fw-semibold text-secondary small">Proveedor *</label>
+                            <div class="input-group has-validation">
+                                <span class="input-group-text bg-light border-end-0">
+                                    <i class="bi bi-truck text-muted"></i>
+                                </span>
+                                <select id="idProveedor" formControlName="idProveedor" class="form-select border-start-0"
+                                    [ngClass]="{
+                                    'is-invalid': productoForm.get('idProveedor')?.touched && productoForm.get('idProveedor')?.invalid,
+                                    'is-valid': productoForm.get('idProveedor')?.touched && productoForm.get('idProveedor')?.valid
+                                    }">
+                                    <option value="" disabled selected>Selecciona un proveedor...</option>
+                                    @for (proveedor of proveedores; track proveedor.idProveedor) {
+                                        <option [ngValue]="proveedor.idProveedor">{{ proveedor.nombre }} (RUC: {{ proveedor.ruc }})</option>
+                                    }
+                                </select>
+
+                                @if (productoForm.get('idProveedor')?.touched && productoForm.get('idProveedor')?.errors?.['required'])
+                                {
+                                <div class="invalid-feedback">
+                                    Debe seleccionar un proveedor.
+                                </div>
+                                }
+                            </div>
+                        </div>
+
+                        <!-- Campo: Precio Base -->
+                        <div class="mb-3">
+                            <label for="precioBase" class="form-label fw-semibold text-secondary small">Precio Base * (Soles)</label>
+                            <div class="input-group has-validation">
+                                <span class="input-group-text bg-light border-end-0">
+                                    <i class="bi bi-cash-stack text-muted"></i>
+                                </span>
+                                <input type="number" step="0.01" id="precioBase" formControlName="precioBase" class="form-control border-start-0"
+                                    placeholder="Ej. 180.00" [ngClass]="{
+                                    'is-invalid': productoForm.get('precioBase')?.touched && productoForm.get('precioBase')?.invalid,
+                                    'is-valid': productoForm.get('precioBase')?.touched && productoForm.get('precioBase')?.valid
+                                    }" />
+
+                                @if (productoForm.get('precioBase')?.touched && productoForm.get('precioBase')?.errors?.['required'])
+                                {
+                                <div class="invalid-feedback">
+                                    El precio base es obligatorio.
+                                </div>
+                                }
+                                @if (productoForm.get('precioBase')?.touched && productoForm.get('precioBase')?.errors?.['min'])
+                                {
+                                <div class="invalid-feedback">
+                                    El precio base no puede ser menor a 0.
+                                </div>
+                                }
+                            </div>
+                        </div>
+
+                        <!-- Campo: Descripción -->
+                        <div class="mb-4">
+                            <label for="descripcion" class="form-label fw-semibold text-secondary small">Descripción (Opcional)</label>
+                            <div class="input-group has-validation">
+                                <span class="input-group-text bg-light border-end-0 align-items-start pt-2">
+                                    <i class="bi bi-card-text text-muted"></i>
+                                </span>
+                                <textarea id="descripcion" formControlName="descripcion" rows="3"
+                                    class="form-control border-start-0" placeholder="Ej. Características del producto..."
+                                    [ngClass]="{
+                                    'is-invalid': productoForm.get('descripcion')?.touched && productoForm.get('descripcion')?.invalid,
+                                    'is-valid': productoForm.get('descripcion')?.touched && productoForm.get('descripcion')?.valid
+                                    }"></textarea>
+
+                                @if (productoForm.get('descripcion')?.touched && productoForm.get('descripcion')?.errors?.['maxlength'])
+                                {
+                                <div class="invalid-feedback">
+                                    La descripción no puede exceder los 2000 caracteres.
+                                </div>
+                                }
+                            </div>
+                        </div>
+
+                        <!-- Botón de Envío -->
+                        <button type="submit"
+                            class="btn btn-primary w-100 py-2.5 fw-semibold d-flex align-items-center justify-content-center transition-all"
+                            [disabled]="isSubmitting">
+                            @if (isSubmitting) {
+                            <span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                            Guardando...
+                            } @else {
+                            <i class="bi bi-save-fill me-2"></i>
+                            {{ isEditMode ? 'Actualizar Producto' : 'Registrar Producto' }}
+                            }
+                        </button>
+
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
