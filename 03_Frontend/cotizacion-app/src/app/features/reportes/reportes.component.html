@@ -1,0 +1,282 @@
+<div class="container-fluid py-2">
+
+  <!-- Cabecera de la Página -->
+  <div class="d-flex align-items-center justify-content-between mb-4 flex-wrap gap-2">
+    <div>
+      <span class="text-overline text-uppercase"
+        style="letter-spacing: 1px; font-size: 0.75rem; font-weight: 700; color: var(--color-brand-accent);">Módulo
+        Corporativo</span>
+      <h2 class="fw-extrabold text-dark mb-0 fs-3">Generador de Reportes</h2>
+    </div>
+    <div class="d-flex align-items-center gap-2 bg-white px-3 py-2 border rounded-3 shadow-sm">
+      <i class="bi bi-file-earmark-bar-graph text-primary"></i>
+      <span class="small fw-semibold text-secondary">Exportación Ejecutiva</span>
+    </div>
+  </div>
+
+  <!-- Panel de Filtros -->
+  <div class="card border-0 shadow-sm bg-white mb-4" style="position: relative; z-index: 9999 !important;">
+    <div class="card-header bg-white border-bottom p-3 d-flex align-items-center">
+      <i class="bi bi-filter-left fs-5 text-primary me-2"></i>
+      <h6 class="mb-0 fw-bold text-dark">Filtros de Búsqueda</h6>
+    </div>
+    <div class="card-body p-4" style="min-height: 300px;">
+      <div class="row g-3">
+        <!-- Fecha Inicio -->
+        <div class="col-sm-6 col-md-3 col-lg-2">
+          <label for="fechaInicio" class="form-label small fw-bold text-secondary">Fecha de Inicio</label>
+          <input type="date" id="fechaInicio" class="form-control" [(ngModel)]="fechaInicio"
+            (change)="aplicarFiltros()">
+        </div>
+
+        <!-- Fecha Fin -->
+        <div class="col-sm-6 col-md-3 col-lg-2">
+          <label for="fechaFin" class="form-label small fw-bold text-secondary">Fecha de Fin</label>
+          <input type="date" id="fechaFin" class="form-control" [(ngModel)]="fechaFin" (change)="aplicarFiltros()">
+        </div>
+
+        <!-- Cliente -->
+        <div class="col-md-6 col-lg-4" style="position: relative; z-index: 99999 !important;">
+          <label class="form-label small fw-bold text-secondary">Cliente (Filtrable)</label>
+
+          <!-- Trigger control dropdown -->
+          <div class="input-group" (click)="toggleDropdownCliente(); $event.stopPropagation()" style="cursor: pointer;">
+            <input type="text" class="form-control bg-white" readonly
+              [value]="clienteNombreFiltro || '-- Todos los Clientes --'" placeholder="Seleccionar cliente..."
+              style="cursor: pointer;">
+            <span class="input-group-text bg-white">
+              <i class="bi" [class.bi-chevron-down]="!mostrarDropdownCliente"
+                [class.bi-chevron-up]="mostrarDropdownCliente"></i>
+            </span>
+          </div>
+
+          <!-- Dropdown con buscador interno -->
+          @if (mostrarDropdownCliente) {
+          <div class="dropdown-menu shadow w-100 p-2 show border border-light-subtle rounded-3"
+            style="position: absolute; top: 100%; left: 0; z-index: 999999 !important; max-height: 250px; overflow-y: auto; display: block; margin-top: 4px;">
+
+            <!-- Input de búsqueda interno -->
+            <div class="mb-2">
+              <input type="text" class="form-control form-control-sm border-secondary-subtle"
+                placeholder="Escribe para buscar cliente..." [(ngModel)]="busquedaClienteQuery"
+                (click)="$event.stopPropagation()">
+            </div>
+
+            <!-- Lista filtrada -->
+            <ul class="list-unstyled mb-0 max-vh-25 overflow-y-auto">
+              <li>
+                <button type="button"
+                  class="dropdown-item py-2 px-3 rounded small d-flex align-items-center justify-content-between"
+                  (click)="seleccionarCliente(''); $event.stopPropagation()">
+                  <span class="text-muted"><em>-- Todos los Clientes --</em></span>
+                  @if (!clienteNombreFiltro) {
+                  <i class="bi bi-check text-primary fs-5"></i>
+                  }
+                </button>
+              </li>
+              @for (c of clientesFiltrados; track c.idCliente) {
+              <li>
+                <button type="button"
+                  class="dropdown-item py-2 px-3 rounded small d-flex align-items-center justify-content-between"
+                  (click)="seleccionarCliente(c.nombre); $event.stopPropagation()">
+                  <span>{{ c.nombre }}</span>
+                  @if (clienteNombreFiltro === c.nombre) {
+                  <i class="bi bi-check text-primary fs-5"></i>
+                  }
+                </button>
+              </li>
+              } @empty {
+              <li class="text-muted text-center py-3 small">
+                No se encontraron clientes.
+              </li>
+              }
+            </ul>
+          </div>
+          }
+        </div>
+
+        <!-- Estado -->
+        <div class="col-sm-6 col-md-3 col-lg-2">
+          <label for="estado" class="form-label small fw-bold text-secondary">Estado</label>
+          <select id="estado" class="form-select" [(ngModel)]="estado" (change)="aplicarFiltros()">
+            <option [value]="''">-- Todos --</option>
+            @for (est of estadosList; track est.idEstado || est) {
+            <option [value]="est.nombre || est">{{ est.nombre || est }}</option>
+            }
+          </select>
+        </div>
+
+        <!-- Moneda -->
+        <div class="col-sm-6 col-md-3 col-lg-2">
+          <label for="moneda" class="form-label small fw-bold text-secondary">Moneda</label>
+          <select id="moneda" class="form-select" [(ngModel)]="moneda" (change)="aplicarFiltros()">
+            <option [value]="''">-- Todas --</option>
+            @for (mon of monedas; track mon.idMoneda || mon.codigo || mon) {
+            <option [value]="mon.codigo || mon">{{ mon.descripcion || mon.codigo || mon }}</option>
+            }
+          </select>
+        </div>
+      </div>
+
+      <!-- Acciones de Filtro -->
+      <div class="d-flex justify-content-end gap-2 mt-4">
+        <button class="btn btn-outline-secondary d-flex align-items-center gap-1.5 px-4" (click)="limpiarFiltros()">
+          <i class="bi bi-arrow-counterclockwise"></i>
+          <span>Limpiar Filtros</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Métricas Resumen de Consulta (KPIs) -->
+  <div class="row g-4 mb-4" style="position: relative; z-index: 1;">
+    <!-- Total Cotizaciones Coincidentes -->
+    <div class="col-sm-6 col-xl-3">
+      <div class="card p-3 border-0 shadow-sm bg-white h-100">
+        <div class="d-flex align-items-center gap-3">
+          <div class="p-3 rounded bg-light-subtle text-primary border">
+            <i class="bi bi-file-earmark-text fs-3"></i>
+          </div>
+          <div>
+            <span class="text-muted small fw-bold text-uppercase d-block mb-0"
+              style="font-size: 0.65rem; letter-spacing: 0.5px;">Cotizaciones</span>
+            <h4 class="fw-extrabold text-dark mb-0">{{ totalFiltrado }} ítems</h4>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Monto Total Cotizado -->
+    <div class="col-sm-6 col-xl-3">
+      <div class="card p-3 border-0 shadow-sm bg-white h-100">
+        <div class="d-flex align-items-center gap-3">
+          <div class="p-3 rounded bg-primary-subtle text-primary border">
+            <i class="bi bi-wallet2 fs-3"></i>
+          </div>
+          <div>
+            <span class="text-muted small fw-bold text-uppercase d-block mb-0"
+              style="font-size: 0.65rem; letter-spacing: 0.5px;">Total Cotizado</span>
+            <h4 class="fw-extrabold text-dark mb-0">{{ totalCotizadoPEN | currency:'PEN':'symbol':'1.2-2' }}</h4>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Inversión Total Acumulada -->
+    <div class="col-sm-6 col-xl-3">
+      <div class="card p-3 border-0 shadow-sm bg-white h-100">
+        <div class="d-flex align-items-center gap-3">
+          <div class="p-3 rounded bg-danger-subtle text-danger border">
+            <i class="bi bi-cart-dash fs-3"></i>
+          </div>
+          <div>
+            <span class="text-muted small fw-bold text-uppercase d-block mb-0"
+              style="font-size: 0.65rem; letter-spacing: 0.5px;">Costo de Inversión</span>
+            <h4 class="fw-extrabold text-dark mb-0">{{ inversionTotalPEN | currency:'PEN':'symbol':'1.2-2' }}</h4>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Utilidad Bruta Estimada -->
+    <div class="col-sm-6 col-xl-3">
+      <div class="card p-3 border-0 shadow-sm bg-white h-100">
+        <div class="d-flex align-items-center gap-3">
+          <div class="p-3 rounded bg-success-subtle text-success border">
+            <i class="bi bi-graph-up-arrow fs-3"></i>
+          </div>
+          <div>
+            <span class="text-muted small fw-bold text-uppercase d-block mb-0"
+              style="font-size: 0.65rem; letter-spacing: 0.5px;">Utilidad Bruta</span>
+            <h4 class="fw-extrabold text-dark mb-0">{{ utilidadTotalPEN | currency:'PEN':'symbol':'1.2-2' }}</h4>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Vista y Tabla de Resultados -->
+  <div class="card border-0 shadow-sm bg-white">
+    <div
+      class="card-header bg-white border-bottom p-4 d-flex align-items-center justify-content-between flex-wrap gap-2">
+      <h5 class="mb-0 fw-bold text-dark d-flex align-items-center">
+        <i class="bi bi-table me-2 text-primary"></i>
+        Resultados Obtenidos
+      </h5>
+      <div class="d-flex align-items-center gap-2">
+        <button
+          class="btn btn-sm btn-danger d-inline-flex align-items-center gap-1.5 px-3 py-2 transition-all fw-semibold"
+          (click)="exportarPDF()" [disabled]="filteredCotizaciones.length === 0">
+          <i class="bi bi-file-earmark-pdf-fill"></i>
+          Exportar PDF
+        </button>
+        <button
+          class="btn btn-sm btn-primary d-inline-flex align-items-center gap-1.5 px-3 py-2 transition-all fw-semibold"
+          (click)="exportarCSV()" [disabled]="filteredCotizaciones.length === 0">
+          <i class="bi bi-file-earmark-excel-fill"></i>
+          Exportar Excel
+        </button>
+      </div>
+    </div>
+    <div class="card-body p-0">
+      <div class="table-responsive">
+        <table class="table table-hover align-middle mb-0">
+          <thead>
+            <tr>
+              <th scope="col" class="ps-4">ID</th>
+              <th scope="col">Fecha</th>
+              <th scope="col">Cliente</th>
+              <th scope="col">Moneda</th>
+              <th scope="col" class="text-end">Total</th>
+              <th scope="col">Estado</th>
+              <th scope="col" class="text-center">Ver</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (c of filteredCotizaciones; track c.idCotizacion) {
+            <tr>
+              <td class="ps-4">
+                <a [routerLink]="['/cotizacion', c.idCotizacion]"
+                  class="badge bg-light text-primary border border-primary-subtle py-2 px-3 fw-bold text-decoration-none">
+                  #{{ c.idCotizacion }}
+                </a>
+              </td>
+              <td class="text-muted small">{{ c.fecha | date:'yyyy-MM-dd HH:mm' }}</td>
+              <td class="fw-semibold text-dark">{{ c.clienteNombre }}</td>
+              <td class="small">{{ c.monedaCodigo || 'PEN' }}</td>
+              <td class="fw-bold text-dark text-end">
+                {{ c.totalGeneral | currency:(c.monedaCodigo || 'PEN'):'symbol':'1.2-2' }}
+              </td>
+              <td>
+                <span class="badge px-3 py-2 rounded-pill fs-7 fw-bold"
+                  [class.bg-success-subtle]="c.estadoNombre === 'Aprobada' || c.estadoNombre === 'APROBADO'"
+                  [class.text-success]="c.estadoNombre === 'Aprobada' || c.estadoNombre === 'APROBADO'"
+                  [class.bg-warning-subtle]="c.estadoNombre === 'Borrador' || c.estadoNombre === 'Enviada' || c.estadoNombre === 'PENDIENTE'"
+                  [class.text-warning]="c.estadoNombre === 'Borrador' || c.estadoNombre === 'Enviada' || c.estadoNombre === 'PENDIENTE'"
+                  [class.bg-danger-subtle]="c.estadoNombre === 'Rechazada' || c.estadoNombre === 'RECHAZADO'"
+                  [class.text-danger]="c.estadoNombre === 'Rechazada' || c.estadoNombre === 'RECHAZADO'">
+                  {{ c.estadoNombre }}
+                </span>
+              </td>
+              <td class="text-center">
+                <a class="btn btn-sm btn-outline-primary py-1 px-2.5 d-inline-flex align-items-center"
+                  [routerLink]="['/cotizacion', c.idCotizacion]">
+                  <i class="bi bi-eye-fill"></i>
+                </a>
+              </td>
+            </tr>
+            } @empty {
+            <tr>
+              <td colspan="7" class="text-center py-5 text-muted">
+                <i class="bi bi-info-circle fs-2 d-block mb-2 text-secondary"></i>
+                No se encontraron cotizaciones con los criterios de búsqueda seleccionados.
+              </td>
+            </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+</div>

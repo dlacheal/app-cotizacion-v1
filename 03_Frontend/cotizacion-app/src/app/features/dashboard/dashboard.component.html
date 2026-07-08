@@ -1,0 +1,261 @@
+<div class="container-fluid py-2">
+  
+  <!-- Cabecera del Dashboard -->
+  <div class="d-flex align-items-center justify-content-between mb-4 flex-wrap gap-2">
+    <div>
+      <span class="text-overline text-uppercase" style="letter-spacing: 1px; font-size: 0.75rem; font-weight: 700; color: var(--color-brand-accent);">Resumen General</span>
+      <h2 class="fw-extrabold text-dark mb-0 fs-3">Dashboard de Cotizaciones</h2>
+    </div>
+    <div class="d-flex align-items-center gap-2 bg-white px-3 py-2 border rounded-3 shadow-sm">
+      <i class="bi bi-calendar3 text-primary"></i>
+      <span class="small fw-semibold text-secondary">Control de Negocios Live</span>
+    </div>
+  </div>
+
+  <!-- Fila de KPI Cards -->
+  <div class="row g-4 mb-4">
+    <!-- Card 1: Total Cotizado -->
+    <div class="col-sm-6 col-xl-3">
+      <div class="card p-3 border-0 shadow-sm bg-white h-100">
+        <div class="d-flex align-items-center justify-content-between mb-3">
+          <div class="p-2.5 rounded-3 bg-light-subtle border border-primary-subtle text-primary">
+            <i class="bi bi-cash-coin fs-4"></i>
+          </div>
+          <span class="badge bg-primary-subtle text-primary border border-primary-subtle fs-7">Volumen Total</span>
+        </div>
+        <span class="text-muted small fw-bold text-uppercase d-block mb-1" style="font-size: 0.65rem; letter-spacing: 0.5px;">Total Cotizado</span>
+        <h4 class="fw-extrabold text-dark mb-1">{{ totalCotizado | currency:'PEN':'symbol':'1.2-2' }}</h4>
+        <small class="text-muted">PEN Consolidado (T.C 3.75)</small>
+      </div>
+    </div>
+
+    <!-- Card 2: Costo de Inversión -->
+    <div class="col-sm-6 col-xl-3">
+      <div class="card p-3 border-0 shadow-sm bg-white h-100">
+        <div class="d-flex align-items-center justify-content-between mb-3">
+          <div class="p-2.5 rounded-3 bg-danger-subtle text-danger border border-danger-subtle">
+            <i class="bi bi-graph-down fs-4"></i>
+          </div>
+          <span class="badge bg-danger-subtle text-danger border border-danger-subtle fs-7">Materiales</span>
+        </div>
+        <span class="text-muted small fw-bold text-uppercase d-block mb-1" style="font-size: 0.65rem; letter-spacing: 0.5px;">Inversión Total</span>
+        <h4 class="fw-extrabold text-dark mb-1">{{ inversionTotal | currency:'PEN':'symbol':'1.2-2' }}</h4>
+        <small class="text-muted">Inversión acumulada en costos</small>
+      </div>
+    </div>
+
+    <!-- Card 3: Utilidad Bruta -->
+    <div class="col-sm-6 col-xl-3">
+      <div class="card p-3 border-0 shadow-sm bg-white h-100">
+        <div class="d-flex align-items-center justify-content-between mb-3">
+          <div class="p-2.5 rounded-3 bg-success-subtle text-success border border-success-subtle">
+            <i class="bi bi-graph-up fs-4"></i>
+          </div>
+          <span class="badge bg-success-subtle text-success border border-success-subtle fs-7">Margen: {{ margenUtilidad }}%</span>
+        </div>
+        <span class="text-muted small fw-bold text-uppercase d-block mb-1" style="font-size: 0.65rem; letter-spacing: 0.5px;">Utilidad Bruta</span>
+        <h4 class="fw-extrabold text-dark mb-1">{{ utilidadTotal | currency:'PEN':'symbol':'1.2-2' }}</h4>
+        <small class="text-muted">Ganancia bruta estimada</small>
+      </div>
+    </div>
+
+    <!-- Card 4: Tasa de Aprobación -->
+    <div class="col-sm-6 col-xl-3">
+      <div class="card p-3 border-0 shadow-sm bg-white h-100">
+        <div class="d-flex align-items-center justify-content-between mb-3">
+          <div class="p-2.5 rounded-3 bg-warning-subtle text-warning border border-warning-subtle">
+            <i class="bi bi-check-circle-fill fs-4"></i>
+          </div>
+          <span class="badge bg-light text-secondary border fs-7">{{ approvedCount }} aprobadas</span>
+        </div>
+        <span class="text-muted small fw-bold text-uppercase d-block mb-1" style="font-size: 0.65rem; letter-spacing: 0.5px;">Tasa de Conversión</span>
+        <h4 class="fw-extrabold text-dark mb-1">{{ conversionRate }}%</h4>
+        <small class="text-muted">Efectividad de cierre comercial</small>
+      </div>
+    </div>
+  </div>
+
+  <!-- Grid de Gráficos -->
+  <div class="row g-4 mb-4">
+    <!-- Panel 1: Gráfico de Tendencia Mensual (Grande) -->
+    <div class="col-lg-8">
+      <div class="card h-100">
+        <div class="card-header bg-white border-bottom p-4 d-flex align-items-center justify-content-between">
+          <h5 class="mb-0 fw-bold text-dark d-flex align-items-center">
+            <i class="bi bi-activity me-2 text-primary"></i>
+            Tendencia de Facturación (Soles Consolidados)
+          </h5>
+          <span class="small text-muted">Mensual 2026</span>
+        </div>
+        <div class="card-body p-4 d-flex flex-column justify-content-center">
+          
+          <!-- Contenedor del Gráfico SVG Responsivo -->
+          <div class="w-100" style="position: relative; min-height: 300px;">
+            <svg viewBox="0 0 500 200" width="100%" height="100%" preserveAspectRatio="xMidYMid meet">
+              <defs>
+                <!-- Gradiente para el área bajo la curva -->
+                <linearGradient id="areaGradient" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stop-color="#6366f1" stop-opacity="0.35"/>
+                  <stop offset="100%" stop-color="#6366f1" stop-opacity="0.00"/>
+                </linearGradient>
+                <!-- Gradiente para la línea de tendencia -->
+                <linearGradient id="lineGradient" x1="0" y1="0" x2="1" y2="0">
+                  <stop offset="0%" stop-color="#6366f1"/>
+                  <stop offset="100%" stop-color="#3b82f6"/>
+                </linearGradient>
+              </defs>
+
+              <!-- Líneas de cuadrícula horizontal para referencia visual -->
+              <line x1="30" y1="20" x2="470" y2="20" stroke="#f1f5f9" stroke-width="1" stroke-dasharray="3,3"/>
+              <line x1="30" y1="55" x2="470" y2="55" stroke="#f1f5f9" stroke-width="1" stroke-dasharray="3,3"/>
+              <line x1="30" y1="90" x2="470" y2="90" stroke="#f1f5f9" stroke-width="1" stroke-dasharray="3,3"/>
+              <line x1="30" y1="125" x2="470" y2="125" stroke="#f1f5f9" stroke-width="1" stroke-dasharray="3,3"/>
+              <line x1="30" y1="160" x2="470" y2="160" stroke="#cbd5e1" stroke-width="1"/> <!-- Línea base -->
+
+              <!-- Relleno del área bajo la curva -->
+              <path [attr.d]="trendAreaPath" fill="url(#areaGradient)"></path>
+
+              <!-- Línea de la tendencia -->
+              <path [attr.d]="trendPath" fill="none" stroke="url(#lineGradient)" stroke-width="3" stroke-linecap="round"></path>
+
+              <!-- Puntos interactivos (Círculos) -->
+              @for (pt of trendPoints; track pt.label) {
+                <!-- Círculo interior blanco -->
+                <circle [attr.cx]="pt.x" [attr.cy]="pt.y" r="5" fill="#ffffff" stroke="#6366f1" stroke-width="2.5"></circle>
+                <!-- Texto del mes debajo del gráfico -->
+                <text [attr.x]="pt.x" y="180" text-anchor="middle" fill="#94a3b8" font-size="9" font-weight="600">{{ pt.label }}</text>
+              }
+            </svg>
+          </div>
+          
+        </div>
+      </div>
+    </div>
+
+    <!-- Panel 2: Gráficos de barra y moneda -->
+    <div class="col-lg-4 d-flex flex-column gap-4">
+      <!-- Donut / Relación por Estado -->
+      <div class="card flex-grow-1">
+        <div class="card-header bg-white border-bottom p-3">
+          <h6 class="mb-0 fw-bold text-dark d-flex align-items-center">
+            <i class="bi bi-pie-chart-fill me-2 text-primary"></i>
+            Estado de Cotizaciones
+          </h6>
+        </div>
+        <div class="card-body p-3 d-flex align-items-center justify-content-center">
+          
+          <!-- SVG Bar Chart Simplificado -->
+          <svg width="100%" height="150" viewBox="0 0 200 120" class="mx-auto">
+            <!-- Barra Aprobados -->
+            <rect x="20" [attr.y]="100 - barApprovedHeight" width="30" [attr.height]="barApprovedHeight" fill="#059669" rx="4"></rect>
+            <!-- Barra Pendientes -->
+            <rect x="85" [attr.y]="100 - barPendingHeight" width="30" [attr.height]="barPendingHeight" fill="#d97706" rx="4"></rect>
+            <!-- Barra Rechazados -->
+            <rect x="150" [attr.y]="100 - barRejectedHeight" width="30" [attr.height]="barRejectedHeight" fill="#dc2626" rx="4"></rect>
+
+            <!-- Textos de valores sobre las barras -->
+            <text x="35" [attr.y]="92 - barApprovedHeight" text-anchor="middle" fill="#047857" font-size="10" font-weight="700">{{ approvedCount }}</text>
+            <text x="100" [attr.y]="92 - barPendingHeight" text-anchor="middle" fill="#b45309" font-size="10" font-weight="700">{{ pendingCount }}</text>
+            <text x="165" [attr.y]="92 - barRejectedHeight" text-anchor="middle" fill="#b91c1c" font-size="10" font-weight="700">{{ rejectedCount }}</text>
+
+            <!-- Etiquetas de ejes -->
+            <text x="35" y="115" text-anchor="middle" fill="#475569" font-size="9" font-weight="700">Aprob.</text>
+            <text x="100" y="115" text-anchor="middle" fill="#475569" font-size="9" font-weight="700">Pend.</text>
+            <text x="165" y="115" text-anchor="middle" fill="#475569" font-size="9" font-weight="700">Rech.</text>
+          </svg>
+
+        </div>
+      </div>
+
+      <!-- Donut / Relación por Moneda -->
+      <div class="card flex-grow-1">
+        <div class="card-header bg-white border-bottom p-3">
+          <h6 class="mb-0 fw-bold text-dark d-flex align-items-center">
+            <i class="bi bi-cash-stack me-2 text-primary"></i>
+            Distribución de Moneda
+          </h6>
+        </div>
+        <div class="card-body p-3">
+          <div class="d-flex align-items-center justify-content-between mb-2">
+            <span class="small fw-semibold text-secondary"><i class="bi bi-circle-fill text-primary me-1" style="font-size: 0.65rem;"></i> Soles (PEN)</span>
+            <span class="small fw-bold text-dark">{{ penTotal | currency:'PEN':'symbol':'1.2-2' }} ({{ penCount }})</span>
+          </div>
+          <div class="d-flex align-items-center justify-content-between mb-3">
+            <span class="small fw-semibold text-secondary"><i class="bi bi-circle-fill text-info me-1" style="font-size: 0.65rem;"></i> Dólares (USD)</span>
+            <span class="small fw-bold text-dark">{{ usdTotal | currency:'USD':'symbol':'1.2-2' }} ({{ usdCount }})</span>
+          </div>
+          <div class="progress" style="height: 8px; border-radius: 4px; overflow: hidden;">
+            <div class="progress-bar bg-primary" role="progressbar" [style.width.%]="penPercent" aria-valuemin="0" aria-valuemax="100"></div>
+            <div class="progress-bar bg-info" role="progressbar" [style.width.%]="usdPercent" aria-valuemin="0" aria-valuemax="100"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Fila de Cotizaciones Recientes -->
+  <div class="card">
+    <div class="card-header d-flex align-items-center justify-content-between p-4 bg-white border-bottom">
+      <h5 class="mb-0 fw-bold text-dark d-flex align-items-center">
+        <i class="bi bi-clock-history me-2 text-primary"></i>
+        Actividad Reciente
+      </h5>
+      <a class="btn btn-sm btn-outline-primary py-1.5 px-3" routerLink="/cotizacion">Ver Todas</a>
+    </div>
+    <div class="card-body p-0">
+      <div class="table-responsive">
+        <table class="table table-hover align-middle mb-0">
+          <thead>
+            <tr>
+              <th scope="col" class="ps-4">ID</th>
+              <th scope="col">Fecha</th>
+              <th scope="col">Cliente</th>
+              <th scope="col">Monto total</th>
+              <th scope="col">Estado</th>
+              <th scope="col" class="text-center">Ver</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (c of recentQuotes; track c.idCotizacion) {
+            <tr>
+              <td class="ps-4">
+                <a [routerLink]="['/cotizacion', c.idCotizacion]" class="badge bg-light text-primary border border-primary-subtle py-2 px-3 fw-bold text-decoration-none">
+                  #{{ c.idCotizacion }}
+                </a>
+              </td>
+              <td class="text-muted small">{{ c.fecha | date:'yyyy-MM-dd HH:mm' }}</td>
+              <td class="fw-semibold text-dark">{{ c.clienteNombre }}</td>
+              <td class="fw-bold text-dark">
+                {{ c.totalGeneral | currency:(c.monedaCodigo || 'PEN'):'symbol':'1.2-2' }}
+              </td>
+              <td>
+                <span class="badge px-3 py-2 rounded-pill fs-7 fw-bold"
+                  [class.bg-success-subtle]="c.estadoNombre === 'Aprobada' || c.estadoNombre === 'APROBADO'"
+                  [class.text-success]="c.estadoNombre === 'Aprobada' || c.estadoNombre === 'APROBADO'"
+                  [class.bg-warning-subtle]="c.estadoNombre === 'Borrador' || c.estadoNombre === 'Enviada' || c.estadoNombre === 'PENDIENTE'"
+                  [class.text-warning]="c.estadoNombre === 'Borrador' || c.estadoNombre === 'Enviada' || c.estadoNombre === 'PENDIENTE'"
+                  [class.bg-danger-subtle]="c.estadoNombre === 'Rechazada' || c.estadoNombre === 'RECHAZADO'"
+                  [class.text-danger]="c.estadoNombre === 'Rechazada' || c.estadoNombre === 'RECHAZADO'">
+                  {{ c.estadoNombre }}
+                </span>
+              </td>
+              <td class="text-center">
+                <a class="btn btn-sm btn-outline-primary py-1 px-2.5 d-inline-flex align-items-center" [routerLink]="['/cotizacion', c.idCotizacion]">
+                  <i class="bi bi-eye-fill"></i>
+                </a>
+              </td>
+            </tr>
+            } @empty {
+            <tr>
+              <td colspan="6" class="text-center py-4 text-muted">
+                No hay actividades de cotización registradas en la plataforma.
+              </td>
+            </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+</div>
