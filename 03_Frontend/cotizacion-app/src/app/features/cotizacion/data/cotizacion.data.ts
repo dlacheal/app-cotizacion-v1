@@ -1,0 +1,108 @@
+import { Cotizacion } from "../models/cotizacion.model";
+
+
+export const cotizacionData: Cotizacion =
+
+{
+    "idCotizacion": 1,
+    "fecha": "2025-12-13 11:34:24",
+    "clienteNombre": "Minera Los Andes SA",
+    "clienteRucDni": "20555555551",
+    "clienteTelefono": "01-444-1111",
+    "clienteEmail": "logistica@mineraandes.com",
+    "clienteDireccion": "Carretera Central Km 100",
+    "usuarioUsername": "vendedor1",
+    "monedaCodigo": "PEN",
+    "monedaDescripcion": "Soles",
+    "formaPagoNombre": "Crédito 30 días",
+    "estadoNombre": "Aprobada",
+    "validezDias": 15,
+    "observaciones": "Entrega inmediata en oficinas del cliente",
+    "inversionTotal": 8260.00,
+    "utilidadBrutaTotal": 2800.00,
+    "subTotal": 9800.00,
+    "montoIgv": 1764.00,
+    "totalGeneral": 11564.00,
+    "detalles": [
+        {
+            "idDetalle": 1,
+            "idProducto": 1,
+            "productoNombre": "Laptop Dell Latitude",
+            "codigoArticulo": "DELL-001",
+            "unidadMedida": "UND",
+            "descripcionItem": "Laptop Dell Latitude i7",
+            "numeroLinea": 1,
+            "cantidad": 2.00,
+            "costoUnitario": 3500.0000,
+            "porcentajeGanancia": 40.0000,
+            "precioVentaUnit": 4900.0000,
+            "subTotal": 9800.00,
+            "impuestoMonto": 1764.00,
+            "totalLinea": 11564.00
+        },
+        {
+            "idDetalle": 2,
+            "idProducto": 2,
+            "productoNombre": "Silla Ergonómica Gerencial",
+            "codigoArticulo": "SILLA-GER",
+            "unidadMedida": "UND",
+            "descripcionItem": "Silla Ergonómica Gerencial",
+            "numeroLinea": 1,
+            "cantidad": 10.00,
+            "costoUnitario": 450.0000,
+            "porcentajeGanancia": 40.0000,
+            "precioVentaUnit": 630.0000,
+            "subTotal": 6300.00,
+            "impuestoMonto": 1134.00,
+            "totalLinea": 7434.00
+        }/*,
+        {
+            "idDetalle": 3,
+            "idProducto": 3,
+            "productoNombre": "Laptop Dell Latitude",
+            "codigoArticulo": "DELL-001",
+            "unidadMedida": "UND",
+            "descripcionItem": "Laptop Dell Latitude i7",
+            "numeroLinea": 1,
+            "cantidad": 2.00,
+            "costoUnitario": 3500.0000,
+            "porcentajeGanancia": 40.0000,
+            "precioVentaUnit": 4900.0000,
+            "subTotal": 9800.00,
+            "impuestoMonto": 1764.00,
+            "totalLinea": 11564.00
+        } ,
+        {
+            "idDetalle": 4,
+            "idProducto": 4,
+            "productoNombre": "Laptop Dell Latitude",
+            "codigoArticulo": "DELL-001",
+            "unidadMedida": "UND",
+            "descripcionItem": "Laptop Dell Latitude i7",
+            "numeroLinea": 1,
+            "cantidad": 2.00,
+            "costoUnitario": 3500.0000,
+            "porcentajeGanancia": 40.0000,
+            "precioVentaUnit": 4900.0000,
+            "subTotal": 9800.00,
+            "impuestoMonto": 1764.00,
+            "totalLinea": 11564.00
+        },
+        {
+            "idDetalle": 5,
+            "idProducto": 5,
+            "productoNombre": "Laptop Dell Latitude",
+            "codigoArticulo": "DELL-001",
+            "unidadMedida": "UND",
+            "descripcionItem": "Laptop Dell Latitude i7",
+            "numeroLinea": 1,
+            "cantidad": 2.00,
+            "costoUnitario": 3500.0000,
+            "porcentajeGanancia": 40.0000,
+            "precioVentaUnit": 4900.0000,
+            "subTotal": 9800.00,
+            "impuestoMonto": 1764.00,
+            "totalLinea": 11564.00
+        }*/
+    ]
+}

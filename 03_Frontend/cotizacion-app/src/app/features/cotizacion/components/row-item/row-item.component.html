@@ -1,0 +1,17 @@
+<td>{{ item.idDetalle }}</td>
+<td>{{ item.productoNombre }}</td>
+<td>{{ item.cantidad }}</td>
+<td>{{ item.unidadMedida }}</td>
+<td>{{ item.costoUnitario }}</td>
+<td>{{ item.porcentajeGanancia }}</td>
+<td>{{ item.precioVentaUnit }}</td>
+<td>{{ item.subTotal }}</td>
+<td>{{ item.impuestoMonto }}</td>
+<td>{{ item.totalLinea }}</td>
+@if (isNueva) {
+<td>
+    <button class="btn btn-danger btn-sm" (click)="onRemove(item.idDetalle)">
+        Eliminar
+    </button>
+</td>
+}

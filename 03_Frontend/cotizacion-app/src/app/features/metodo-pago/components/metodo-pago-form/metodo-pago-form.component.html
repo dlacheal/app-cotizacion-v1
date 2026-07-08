@@ -1,0 +1,110 @@
+<div class="container py-4">
+    <div class="row">
+        <div class="col-lg-6 col-md-8 mx-auto">
+            <div class="card border-0 shadow-sm bg-white">
+                <div class="card-header bg-primary text-white p-3 rounded-top d-flex align-items-center justify-content-between">
+                    <h5 class="mb-0 d-flex align-items-center">
+                        <i class="bi me-2" [ngClass]="isEditMode ? 'bi-pencil-square' : 'bi-plus-circle-fill'"></i>
+                        {{ isEditMode ? 'Editar Método de Pago' : 'Agregar Método de Pago' }}
+                    </h5>
+                    <a class="btn btn-sm btn-outline-light d-flex align-items-center gap-1" routerLink="/metodo-pago">
+                        <i class="bi bi-arrow-left"></i>
+                        Volver
+                    </a>
+                </div>
+                <div class="card-body p-4 border-start border-end border-bottom rounded-bottom">
+
+                    <!-- Mensaje de éxito -->
+                    @if (successMessage) {
+                    <div class="alert alert-success d-flex align-items-center border-0 shadow-sm mb-3" role="alert">
+                        <i class="bi bi-check-circle-fill me-2 fs-5"></i>
+                        <div>{{ successMessage }}</div>
+                    </div>
+                    }
+
+                    <!-- Mensaje de error -->
+                    @if (errorMessage) {
+                    <div class="alert alert-danger d-flex align-items-center border-0 shadow-sm mb-3" role="alert">
+                        <i class="bi bi-exclamation-triangle-fill me-2 fs-5"></i>
+                        <div>{{ errorMessage }}</div>
+                    </div>
+                    }
+
+                    <!-- Formulario -->
+                    <form [formGroup]="metodoForm" (ngSubmit)="onSubmit()" novalidate>
+
+                        <!-- Campo: Nombre -->
+                        <div class="mb-3">
+                            <label for="nombre" class="form-label fw-semibold text-secondary small">Nombre del Método *</label>
+                            <div class="input-group has-validation">
+                                <span class="input-group-text bg-light border-end-0">
+                                    <i class="bi bi-credit-card text-muted"></i>
+                                </span>
+                                <input type="text" id="nombre" formControlName="nombre" class="form-control border-start-0"
+                                    placeholder="Ej. Efectivo, Tarjeta de Crédito, Transferencia" [ngClass]="{
+                                    'is-invalid': metodoForm.get('nombre')?.touched && metodoForm.get('nombre')?.invalid,
+                                    'is-valid': metodoForm.get('nombre')?.touched && metodoForm.get('nombre')?.valid
+                                    }" />
+
+                                @if (metodoForm.get('nombre')?.touched && metodoForm.get('nombre')?.errors?.['required'])
+                                {
+                                <div class="invalid-feedback">
+                                    El nombre del método es obligatorio.
+                                </div>
+                                }
+                                @if (metodoForm.get('nombre')?.touched && metodoForm.get('nombre')?.errors?.['minlength'])
+                                {
+                                <div class="invalid-feedback">
+                                    El nombre debe tener al menos 3 caracteres.
+                                </div>
+                                }
+                                @if (metodoForm.get('nombre')?.touched && metodoForm.get('nombre')?.errors?.['maxlength'])
+                                {
+                                <div class="invalid-feedback">
+                                    El nombre no puede exceder los 100 caracteres.
+                                </div>
+                                }
+                            </div>
+                        </div>
+
+                        <!-- Campo: Descripción -->
+                        <div class="mb-4">
+                            <label for="descripcion" class="form-label fw-semibold text-secondary small">Descripción</label>
+                            <div class="input-group has-validation">
+                                <span class="input-group-text bg-light border-end-0">
+                                    <i class="bi bi-chat-left-text text-muted"></i>
+                                </span>
+                                <textarea id="descripcion" formControlName="descripcion" class="form-control border-start-0" rows="3"
+                                    placeholder="Ej. Pagos en efectivo contra entrega, depósito bancario..." [ngClass]="{
+                                    'is-invalid': metodoForm.get('descripcion')?.touched && metodoForm.get('descripcion')?.invalid,
+                                    'is-valid': metodoForm.get('descripcion')?.touched && metodoForm.get('descripcion')?.valid
+                                    }"></textarea>
+
+                                @if (metodoForm.get('descripcion')?.touched && metodoForm.get('descripcion')?.errors?.['maxlength'])
+                                {
+                                <div class="invalid-feedback">
+                                    La descripción no puede exceder los 250 caracteres.
+                                </div>
+                                }
+                            </div>
+                        </div>
+
+                        <!-- Botón de Envío -->
+                        <button type="submit"
+                            class="btn btn-primary w-100 py-2.5 fw-semibold d-flex align-items-center justify-content-center transition-all"
+                            [disabled]="isSubmitting">
+                            @if (isSubmitting) {
+                            <span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                            Guardando...
+                            } @else {
+                            <i class="bi bi-save-fill me-2"></i>
+                            {{ isEditMode ? 'Actualizar Método' : 'Registrar Método' }}
+                            }
+                        </button>
+
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

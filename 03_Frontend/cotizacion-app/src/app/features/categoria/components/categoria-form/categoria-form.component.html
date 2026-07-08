@@ -1,0 +1,112 @@
+<div class="container py-4">
+    <div class="row">
+        <div class="col-lg-6 col-md-8 mx-auto">
+            <div class="card border-0 shadow-sm bg-white">
+                <div class="card-header bg-primary text-white p-3 rounded-top d-flex align-items-center justify-content-between">
+                    <h5 class="mb-0 d-flex align-items-center">
+                        <i class="bi me-2" [ngClass]="isEditMode ? 'bi-pencil-square' : 'bi-plus-circle-fill'"></i>
+                        {{ isEditMode ? 'Editar Categoría' : 'Agregar Categoría' }}
+                    </h5>
+                    <a class="btn btn-sm btn-outline-light d-flex align-items-center gap-1" routerLink="/categoria">
+                        <i class="bi bi-arrow-left"></i>
+                        Volver
+                    </a>
+                </div>
+                <div class="card-body p-4 border-start border-end border-bottom rounded-bottom">
+
+                    <!-- Mensaje de éxito -->
+                    @if (successMessage) {
+                    <div class="alert alert-success d-flex align-items-center border-0 shadow-sm mb-3" role="alert">
+                        <i class="bi bi-check-circle-fill me-2 fs-5"></i>
+                        <div>{{ successMessage }}</div>
+                    </div>
+                    }
+
+                    <!-- Mensaje de error -->
+                    @if (errorMessage) {
+                    <div class="alert alert-danger d-flex align-items-center border-0 shadow-sm mb-3" role="alert">
+                        <i class="bi bi-exclamation-triangle-fill me-2 fs-5"></i>
+                        <div>{{ errorMessage }}</div>
+                    </div>
+                    }
+
+                    <!-- Formulario -->
+                    <form [formGroup]="categoriaForm" (ngSubmit)="onSubmit()" novalidate>
+
+                        <!-- Campo: Nombre -->
+                        <div class="mb-3">
+                            <label for="nombre" class="form-label fw-semibold text-secondary small">Nombre de la Categoría *</label>
+                            <div class="input-group has-validation">
+                                <span class="input-group-text bg-light border-end-0">
+                                    <i class="bi bi-tag-fill text-muted"></i>
+                                </span>
+                                <input type="text" id="nombre" formControlName="nombre" class="form-control border-start-0"
+                                    placeholder="Ej. Tecnología, Mobiliario" [ngClass]="{
+                                    'is-invalid': categoriaForm.get('nombre')?.touched && categoriaForm.get('nombre')?.invalid,
+                                    'is-valid': categoriaForm.get('nombre')?.touched && categoriaForm.get('nombre')?.valid
+                                    }" />
+
+                                @if (categoriaForm.get('nombre')?.touched && categoriaForm.get('nombre')?.errors?.['required'])
+                                {
+                                <div class="invalid-feedback">
+                                    El nombre de la categoría es obligatorio.
+                                </div>
+                                }
+                                @if (categoriaForm.get('nombre')?.touched && categoriaForm.get('nombre')?.errors?.['minlength'])
+                                {
+                                <div class="invalid-feedback">
+                                    El nombre debe tener al menos 3 caracteres.
+                                </div>
+                                }
+                                @if (categoriaForm.get('nombre')?.touched && categoriaForm.get('nombre')?.errors?.['maxlength'])
+                                {
+                                <div class="invalid-feedback">
+                                    El nombre no puede exceder los 100 caracteres.
+                                </div>
+                                }
+                            </div>
+                        </div>
+
+                        <!-- Campo: Descripción -->
+                        <div class="mb-4">
+                            <label for="descripcion" class="form-label fw-semibold text-secondary small">Descripción (Opcional)</label>
+                            <div class="input-group has-validation">
+                                <span class="input-group-text bg-light border-end-0 align-items-start pt-2">
+                                    <i class="bi bi-card-text text-muted"></i>
+                                </span>
+                                <textarea id="descripcion" formControlName="descripcion" rows="4"
+                                    class="form-control border-start-0" placeholder="Describe de qué trata esta categoría..."
+                                    [ngClass]="{
+                                    'is-invalid': categoriaForm.get('descripcion')?.touched && categoriaForm.get('descripcion')?.invalid,
+                                    'is-valid': categoriaForm.get('descripcion')?.touched && categoriaForm.get('descripcion')?.valid
+                                    }"></textarea>
+
+                                @if (categoriaForm.get('descripcion')?.touched &&
+                                categoriaForm.get('descripcion')?.errors?.['maxlength'])
+                                {
+                                <div class="invalid-feedback">
+                                    La descripción no puede exceder los 250 caracteres.
+                                </div>
+                                }
+                            </div>
+                        </div>
+
+                        <!-- Botón de Envío -->
+                        <button type="submit"
+                            class="btn btn-primary w-100 py-2.5 fw-semibold d-flex align-items-center justify-content-center transition-all"
+                            [disabled]="isSubmitting">
+                            @if (isSubmitting) {
+                            <span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                            Guardando...
+                            } @else {
+                            <i class="bi bi-save-fill me-2"></i>
+                            {{ isEditMode ? 'Actualizar Categoría' : 'Registrar Categoría' }}
+                            }
+                        </button>
+
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

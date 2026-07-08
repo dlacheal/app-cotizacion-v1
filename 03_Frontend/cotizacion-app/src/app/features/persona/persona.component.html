@@ -1,0 +1,38 @@
+<div class="card bg-light border-0">
+  <div class="card-header bg-dark text-white d-flex align-items-center justify-content-between rounded-top">
+    <h5 class="mb-0">Personas</h5>
+    <span class="badge bg-secondary">{{ personas.length }} ítems</span>
+  </div>
+  <div class="card-body p-0">
+    <div class="table-responsive">
+      <table class="table table-striped table-hover table-bordered mb-0">
+        <thead class="table-secondary text-uppercase">
+          <tr>
+            <th scope="col" style="width: 10%">ID</th>
+            <th scope="col" style="width: 30%">Nombre Completo</th>
+            <th scope="col" style="width: 20%">DNI</th>
+            <th scope="col" style="width: 20%">Teléfono</th>
+            <th scope="col">Email</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (persona of personas; track persona.idPersona) {
+            <tr>
+              <td><strong>{{ persona.idPersona }}</strong></td>
+              <td>{{ persona.nombre }}</td>
+              <td>{{ persona.dni }}</td>
+              <td>{{ persona.telefono || '-' }}</td>
+              <td class="text-muted">{{ persona.email || '-' }}</td>
+            </tr>
+          } @empty {
+            <tr>
+              <td colspan="5" class="text-center py-4 text-muted">
+                No se encontraron personas cargadas.
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,271 @@
+<div class="container py-4">
+    <div class="row">
+        <div class="col-lg-6 col-md-8 mx-auto">
+            <div class="card border-0 shadow-sm bg-white">
+                <div class="card-header bg-primary text-white p-3 rounded-top d-flex align-items-center justify-content-between">
+                    <h5 class="mb-0 d-flex align-items-center">
+                        <i class="bi me-2" [ngClass]="isEditMode ? 'bi-pencil-square' : 'bi-person-plus-fill'"></i>
+                        {{ isEditMode ? 'Editar Usuario y Persona' : 'Registrar Nuevo Usuario' }}
+                    </h5>
+                    <a class="btn btn-sm btn-outline-light d-flex align-items-center gap-1" routerLink="/usuario">
+                        <i class="bi bi-arrow-left"></i>
+                        Volver
+                    </a>
+                </div>
+                <div class="card-body p-4 border-start border-end border-bottom rounded-bottom">
+
+                    <!-- Mensaje de éxito -->
+                    @if (successMessage) {
+                    <div class="alert alert-success d-flex align-items-center border-0 shadow-sm mb-3" role="alert">
+                        <i class="bi bi-check-circle-fill me-2 fs-5"></i>
+                        <div>{{ successMessage }}</div>
+                    </div>
+                    }
+
+                    <!-- Mensaje de error -->
+                    @if (errorMessage) {
+                    <div class="alert alert-danger d-flex align-items-center border-0 shadow-sm mb-3" role="alert">
+                        <i class="bi bi-exclamation-triangle-fill me-2 fs-5"></i>
+                        <div>{{ errorMessage }}</div>
+                    </div>
+                    }
+
+                    <!-- Formulario -->
+                    <form [formGroup]="usuarioForm" (ngSubmit)="onSubmit()" novalidate>
+
+                        <!-- SECCIÓN 1: DATOS PERSONALES -->
+                        <div class="mb-4">
+                            <h6 class="text-primary border-bottom pb-2 mb-3 fw-bold d-flex align-items-center">
+                                <i class="bi bi-person-badge me-2"></i>
+                                1. Datos Personales de la Persona
+                            </h6>
+
+                            <!-- Campo: Nombre Persona -->
+                            <div class="mb-3">
+                                <label for="nombrePersona" class="form-label fw-semibold text-secondary small">Nombre Completo *</label>
+                                <div class="input-group has-validation">
+                                    <span class="input-group-text bg-light border-end-0">
+                                        <i class="bi bi-person text-muted"></i>
+                                    </span>
+                                    <input type="text" id="nombrePersona" formControlName="nombrePersona" class="form-control border-start-0"
+                                        placeholder="Ej. Juan Carlos Perez" [ngClass]="{
+                                        'is-invalid': usuarioForm.get('nombrePersona')?.touched && usuarioForm.get('nombrePersona')?.invalid,
+                                        'is-valid': usuarioForm.get('nombrePersona')?.touched && usuarioForm.get('nombrePersona')?.valid
+                                        }" />
+
+                                    @if (usuarioForm.get('nombrePersona')?.touched && usuarioForm.get('nombrePersona')?.errors?.['required'])
+                                    {
+                                    <div class="invalid-feedback">
+                                        El nombre completo es obligatorio.
+                                    </div>
+                                    }
+                                    @if (usuarioForm.get('nombrePersona')?.touched && usuarioForm.get('nombrePersona')?.errors?.['minlength'])
+                                    {
+                                    <div class="invalid-feedback">
+                                        Debe tener al menos 3 caracteres.
+                                    </div>
+                                    }
+                                    @if (usuarioForm.get('nombrePersona')?.touched && usuarioForm.get('nombrePersona')?.errors?.['maxlength'])
+                                    {
+                                    <div class="invalid-feedback">
+                                        No puede exceder los 150 caracteres.
+                                    </div>
+                                    }
+                                </div>
+                            </div>
+
+                            <!-- Campo: DNI Persona -->
+                            <div class="mb-3">
+                                <label for="dni" class="form-label fw-semibold text-secondary small">Documento Nacional de Identidad (DNI) *</label>
+                                <div class="input-group has-validation">
+                                    <span class="input-group-text bg-light border-end-0">
+                                        <i class="bi bi-card-heading text-muted"></i>
+                                    </span>
+                                    <input type="text" id="dni" formControlName="dni" class="form-control border-start-0"
+                                        placeholder="Ej. 40001234 (8 dígitos)" [ngClass]="{
+                                        'is-invalid': usuarioForm.get('dni')?.touched && usuarioForm.get('dni')?.invalid,
+                                        'is-valid': usuarioForm.get('dni')?.touched && usuarioForm.get('dni')?.valid
+                                        }" />
+
+                                    @if (usuarioForm.get('dni')?.touched && usuarioForm.get('dni')?.errors?.['required'])
+                                    {
+                                    <div class="invalid-feedback">
+                                        El DNI es obligatorio.
+                                    </div>
+                                    }
+                                    @if (usuarioForm.get('dni')?.touched && usuarioForm.get('dni')?.errors?.['pattern'])
+                                    {
+                                    <div class="invalid-feedback">
+                                        Debe ingresar un número de DNI válido de 8 dígitos numéricos.
+                                    </div>
+                                    }
+                                </div>
+                            </div>
+
+                            <!-- Campo: Teléfono Persona -->
+                            <div class="mb-3">
+                                <label for="telefonoPersona" class="form-label fw-semibold text-secondary small">Teléfono (Opcional)</label>
+                                <div class="input-group has-validation">
+                                    <span class="input-group-text bg-light border-end-0">
+                                        <i class="bi bi-telephone text-muted"></i>
+                                    </span>
+                                    <input type="text" id="telefonoPersona" formControlName="telefonoPersona" class="form-control border-start-0"
+                                        placeholder="Ej. 987654321" [ngClass]="{
+                                        'is-invalid': usuarioForm.get('telefonoPersona')?.touched && usuarioForm.get('telefonoPersona')?.invalid,
+                                        'is-valid': usuarioForm.get('telefonoPersona')?.touched && usuarioForm.get('telefonoPersona')?.valid
+                                        }" />
+
+                                    @if (usuarioForm.get('telefonoPersona')?.touched && usuarioForm.get('telefonoPersona')?.errors?.['maxlength'])
+                                    {
+                                    <div class="invalid-feedback">
+                                        El teléfono no puede exceder los 20 caracteres.
+                                    </div>
+                                    }
+                                </div>
+                            </div>
+
+                            <!-- Campo: Email Persona -->
+                            <div class="mb-3">
+                                <label for="emailPersona" class="form-label fw-semibold text-secondary small">Correo Electrónico (Opcional)</label>
+                                <div class="input-group has-validation">
+                                    <span class="input-group-text bg-light border-end-0">
+                                        <i class="bi bi-envelope text-muted"></i>
+                                    </span>
+                                    <input type="email" id="emailPersona" formControlName="emailPersona" class="form-control border-start-0"
+                                        placeholder="Ej. usuario@correo.com" [ngClass]="{
+                                        'is-invalid': usuarioForm.get('emailPersona')?.touched && usuarioForm.get('emailPersona')?.invalid,
+                                        'is-valid': usuarioForm.get('emailPersona')?.touched && usuarioForm.get('emailPersona')?.valid
+                                        }" />
+
+                                    @if (usuarioForm.get('emailPersona')?.touched && usuarioForm.get('emailPersona')?.errors?.['email'])
+                                    {
+                                    <div class="invalid-feedback">
+                                        Ingrese un correo electrónico válido.
+                                    </div>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <!-- SECCIÓN 2: DATOS DE ACCESO (USUARIO) -->
+                        <div class="mb-4">
+                            <h6 class="text-primary border-bottom pb-2 mb-3 fw-bold d-flex align-items-center">
+                                <i class="bi bi-shield-lock me-2"></i>
+                                2. Datos de Acceso de Usuario
+                            </h6>
+
+                            <!-- Campo: Username -->
+                            <div class="mb-3">
+                                <label for="username" class="form-label fw-semibold text-secondary small">Nombre de Usuario (Username) *</label>
+                                <div class="input-group has-validation">
+                                    <span class="input-group-text bg-light border-end-0">
+                                        <i class="bi bi-person-fill text-muted"></i>
+                                    </span>
+                                    <input type="text" id="username" formControlName="username" class="form-control border-start-0"
+                                        placeholder="Ej. jgonzales" [ngClass]="{
+                                        'is-invalid': usuarioForm.get('username')?.touched && usuarioForm.get('username')?.invalid,
+                                        'is-valid': usuarioForm.get('username')?.touched && usuarioForm.get('username')?.valid
+                                        }" />
+
+                                    @if (usuarioForm.get('username')?.touched && usuarioForm.get('username')?.errors?.['required'])
+                                    {
+                                    <div class="invalid-feedback">
+                                        El nombre de usuario es obligatorio.
+                                    </div>
+                                    }
+                                    @if (usuarioForm.get('username')?.touched && usuarioForm.get('username')?.errors?.['minlength'])
+                                    {
+                                    <div class="invalid-feedback">
+                                        El nombre de usuario debe tener al menos 4 caracteres.
+                                    </div>
+                                    }
+                                    @if (usuarioForm.get('username')?.touched && usuarioForm.get('username')?.errors?.['maxlength'])
+                                    {
+                                    <div class="invalid-feedback">
+                                        El nombre de usuario no puede exceder los 50 caracteres.
+                                    </div>
+                                    }
+                                </div>
+                            </div>
+
+                            <!-- Campo: Password -->
+                            <div class="mb-3">
+                                <label for="password" class="form-label fw-semibold text-secondary small">Contraseña {{ isEditMode ? '(Dejar en blanco para no cambiar)' : '*' }}</label>
+                                <div class="input-group has-validation">
+                                    <span class="input-group-text bg-light border-end-0">
+                                        <i class="bi bi-key-fill text-muted"></i>
+                                    </span>
+                                    <input type="password" id="password" formControlName="password" class="form-control border-start-0"
+                                        placeholder="Ej. min. 6 caracteres" [ngClass]="{
+                                        'is-invalid': usuarioForm.get('password')?.touched && usuarioForm.get('password')?.invalid,
+                                        'is-valid': usuarioForm.get('password')?.touched && usuarioForm.get('password')?.valid
+                                        }" />
+
+                                    @if (usuarioForm.get('password')?.touched && usuarioForm.get('password')?.errors?.['required'])
+                                    {
+                                    <div class="invalid-feedback">
+                                        La contraseña es obligatoria.
+                                    </div>
+                                    }
+                                    @if (usuarioForm.get('password')?.touched && usuarioForm.get('password')?.errors?.['minlength'])
+                                    {
+                                    <div class="invalid-feedback">
+                                        La contraseña debe tener al menos 6 caracteres.
+                                    </div>
+                                    }
+                                </div>
+                            </div>
+
+                            <!-- Campo: Roles (Checkboxes) -->
+                            <div class="mb-3">
+                                <label class="form-label fw-semibold text-secondary small d-block">Roles del Usuario *</label>
+                                <div class="border rounded p-3 bg-light">
+                                    <div class="form-check form-check-inline me-4">
+                                        <input class="form-check-input" type="checkbox" id="userRole" formControlName="userRole">
+                                        <label class="form-check-label small fw-semibold text-muted mb-0" for="userRole">USER</label>
+                                    </div>
+                                    <div class="form-check form-check-inline me-4">
+                                        <input class="form-check-input" type="checkbox" id="vendedorRole" formControlName="vendedorRole">
+                                        <label class="form-check-label small fw-semibold text-muted mb-0" for="vendedorRole">VENDEDOR</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="checkbox" id="adminRole" formControlName="adminRole">
+                                        <label class="form-check-label small fw-semibold text-muted mb-0" for="adminRole">ADMIN</label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Campo: Estado (Active/Inactive, Solo en edición) -->
+                            @if (isEditMode) {
+                            <div class="mb-4">
+                                <label class="form-label fw-semibold text-secondary small d-block">Estado del Acceso</label>
+                                <div class="form-check form-switch border rounded p-3 bg-light d-flex align-items-center justify-content-between">
+                                    <label class="form-check-label small fw-semibold text-muted mb-0" for="enableSwitch">
+                                        Habilitar acceso al sistema
+                                    </label>
+                                    <input class="form-check-input mx-0 cursor-pointer" type="checkbox" role="switch" id="enableSwitch" formControlName="enable">
+                                </div>
+                            </div>
+                            }
+                        </div>
+
+                        <!-- Botón de Envío -->
+                        <button type="submit"
+                            class="btn btn-primary w-100 py-2.5 fw-semibold d-flex align-items-center justify-content-center transition-all"
+                            [disabled]="isSubmitting">
+                            @if (isSubmitting) {
+                            <span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                            Guardando Datos...
+                            } @else {
+                            <i class="bi bi-save-fill me-2"></i>
+                            {{ isEditMode ? 'Actualizar Todo' : 'Registrar Todo' }}
+                            }
+                        </button>
+
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
