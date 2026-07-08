@@ -13,22 +13,30 @@ Capa de base de datos del sistema **app-cotizacion-v1**, implementada en **Postg
 ---
 
 ## 📂 Estructura
-```markdown
-01_database/
-│
+
+database/
+
 ├── scripts/
+
 │ ├── 00_drop_all.sql
+
 │ ├── 01_schema.sql
+
 │ ├── 02_tables.sql
+
 │ ├── 03_constraints_indexes.sql
+
 │ ├── 04_views.sql
+
 │ ├── 05_functions_triggers.sql
+
 │ └── 06_data_init.sql
+
 │
 └── docker/
-    └── docker-compose.yml
-    
-```
+
+└── docker-compose.yml
+
 
 
 ## 🧩 Descripción de los scripts

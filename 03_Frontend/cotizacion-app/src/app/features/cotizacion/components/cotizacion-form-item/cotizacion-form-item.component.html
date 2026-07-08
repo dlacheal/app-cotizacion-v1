@@ -1,0 +1,106 @@
+<div class="card border-0 shadow-sm bg-light my-3">
+  <div class="card-header bg-secondary text-white p-3 rounded-top">
+    <h6 class="mb-0 fw-semibold d-flex align-items-center">
+      <i class="bi bi-cart-plus-fill me-2 text-warning"></i>
+      Agregar Producto a la Cotización
+    </h6>
+  </div>
+  <div class="card-body p-4 bg-white border border-light-subtle rounded-bottom">
+    <form (ngSubmit)="onSubmit()" #itemForm="ngForm" class="row g-3">
+      
+      <!-- Selector de Producto (Con Buscador Integrado Internamente) -->
+      <div class="col-md-4 custom-product-dropdown position-relative">
+        <label for="idProducto" class="form-label fw-semibold text-secondary small">Seleccionar Producto *</label>
+        
+        <div class="dropdown">
+          <button class="form-select text-start border border-secondary-subtle d-flex justify-content-between align-items-center bg-white py-2 px-3 shadow-none" 
+                  [class.is-invalid]="itemForm.submitted && !selectedProductoId"
+                  type="button" (click)="toggleDropdown()" style="min-height: 38px;">
+            <span>{{ getSelectedProductoLabel() }}</span>
+          </button>
+          
+          <div class="dropdown-menu w-100 p-2 shadow-lg border border-light-subtle rounded-3 mt-1" 
+               [class.show]="isOpen" 
+               style="max-height: 250px; overflow-y: auto; display: block; visibility: hidden; opacity: 0; transition: all 0.15s ease-in-out; z-index: 1050;"
+               [style.visibility]="isOpen ? 'visible' : 'hidden'"
+               [style.opacity]="isOpen ? '1' : '0'">
+            
+            <!-- Buscador de texto dentro del combo -->
+            <div class="input-group input-group-sm mb-2">
+              <span class="input-group-text bg-light border border-secondary-subtle"><i class="bi bi-search text-secondary"></i></span>
+              <input type="text" class="form-control border border-secondary-subtle" placeholder="Buscar producto por nombre..." [(ngModel)]="filtroProducto" name="filtroProducto" (click)="$event.stopPropagation()" />
+            </div>
+            
+            <div class="dropdown-divider"></div>
+            
+            <!-- Opciones de productos filtrados -->
+            @for (p of productosFiltrados; track p.idProducto) {
+              <button class="dropdown-item py-2 rounded text-truncate" type="button" (click)="selectProducto(p.idProducto)">
+                <i class="bi bi-box-seam me-2 text-secondary"></i>{{ p.nombre }} (S/. {{ p.precioBase }})
+              </button>
+            } @empty {
+              <span class="dropdown-item text-muted small py-2">No se encontraron productos</span>
+            }
+          </div>
+        </div>
+        
+        @if (itemForm.submitted && !selectedProductoId) {
+          <div class="text-danger small mt-1">Debe seleccionar un producto.</div>
+        }
+      </div>
+
+      <!-- Cantidad -->
+      <div class="col-md-2">
+        <label for="cantidad" class="form-label fw-semibold text-secondary small">Cantidad *</label>
+        <input type="number" id="cantidad" name="cantidad" class="form-control" placeholder="Cant." [(ngModel)]="item.cantidad" required min="1" #cantidad="ngModel" [ngClass]="{'is-invalid': cantidad.touched && cantidad.invalid}" />
+        @if (cantidad.touched && cantidad.invalid) {
+          @if (cantidad.errors?.['required']) {
+            <div class="invalid-feedback">Requerido.</div>
+          }
+          @if (cantidad.errors?.['min']) {
+            <div class="invalid-feedback">Mín. 1.</div>
+          }
+        }
+      </div>
+
+      <!-- Unidad Medida -->
+      <div class="col-md-2">
+        <label for="unidadMedida" class="form-label fw-semibold text-secondary small">U. Medida *</label>
+        <input type="text" id="unidadMedida" name="unidadMedida" class="form-control" placeholder="Ej. UNIDAD, KG" [(ngModel)]="item.unidadMedida" required minlength="2" #unidadMedida="ngModel" [ngClass]="{'is-invalid': unidadMedida.touched && unidadMedida.invalid}" />
+        @if (unidadMedida.touched && unidadMedida.invalid) {
+          <div class="invalid-feedback">Mín. 2 carac.</div>
+        }
+      </div>
+
+      <!-- Costo Unitario -->
+      <div class="col-md-2">
+        <label for="costoUnitario" class="form-label fw-semibold text-secondary small">Costo Unitario (S/.) *</label>
+        <input type="number" step="0.01" id="costoUnitario" name="costoUnitario" class="form-control" placeholder="0.00" [(ngModel)]="item.costoUnitario" required min="0.01" #costoUnitario="ngModel" [ngClass]="{'is-invalid': costoUnitario.touched && costoUnitario.invalid}" />
+        @if (costoUnitario.touched && costoUnitario.invalid) {
+          <div class="invalid-feedback">Debe ser > 0.</div>
+        }
+      </div>
+
+      <!-- Porcentaje Ganancia -->
+      <div class="col-md-2">
+        <label for="porcentajeGanancia" class="form-label fw-semibold text-secondary small">% Ganancia *</label>
+        <div class="input-group">
+          <input type="number" id="porcentajeGanancia" name="porcentajeGanancia" class="form-control" placeholder="20" [(ngModel)]="item.porcentajeGanancia" required min="0" #porcentajeGanancia="ngModel" [ngClass]="{'is-invalid': porcentajeGanancia.touched && porcentajeGanancia.invalid}" />
+          <span class="input-group-text">%</span>
+        </div>
+        @if (porcentajeGanancia.touched && porcentajeGanancia.invalid) {
+          <div class="invalid-feedback">Debe ser >= 0.</div>
+        }
+      </div>
+
+      <!-- Botón de Envío -->
+      <div class="col-12 text-end mt-3">
+        <button type="submit" class="btn btn-primary d-inline-flex align-items-center gap-2 fw-semibold px-4 py-2" [disabled]="itemForm.invalid">
+          <i class="bi bi-plus-lg"></i>
+          Agregar Producto
+        </button>
+      </div>
+
+    </form>
+  </div>
+</div>

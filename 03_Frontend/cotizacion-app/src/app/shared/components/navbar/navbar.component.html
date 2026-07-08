@@ -1,0 +1,61 @@
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <div class="container-fluid">
+    <a class="navbar-brand d-flex align-items-center" routerLink="/">
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor"
+        class="bi bi-file-earmark-text me-2" viewBox="0 0 16 16">
+        <path
+          d="M5.5 7a.5.5 0 0 0 0 1h5a.5.5 0 0 0 0-1zM5 9.5a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5m0 2a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5" />
+        <path
+          d="M14 4.5V14a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2h5.5zm-3 0A1.5 1.5 0 0 1 9.5 3V1H4a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V4.5z" />
+      </svg>
+      <strong>{{ title }}</strong>
+    </a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+      aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/cotizacion" routerLinkActive="active"
+            [routerLinkActiveOptions]="{exact: true}">Cotizaciones</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/categoria" routerLinkActive="active">Categorías</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/cliente" routerLinkActive="active">Clientes</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/producto" routerLinkActive="active">Productos</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/proveedor" routerLinkActive="active">Proveedores</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/usuario" routerLinkActive="active">Usuarios</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/almacen" routerLinkActive="active">Almacenes</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/moneda" routerLinkActive="active">Monedas</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/metodo-pago" routerLinkActive="active">Método Pago</a>
+        </li>
+      </ul>
+      <div class="d-flex align-items-center ms-auto">
+        <span class="text-light me-3 small">
+          <i class="bi bi-person-circle me-1"></i>
+          {{ authService.nombrePersona() }}
+        </span>
+        <button class="btn btn-outline-light btn-sm fw-semibold" (click)="logout()">
+          <i class="bi bi-box-arrow-right me-1"></i>
+          Logout
+        </button>
+      </div>
+    </div>
+  </div>
+</nav>
