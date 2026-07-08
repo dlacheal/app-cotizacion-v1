@@ -4,6 +4,9 @@ import com.cotizacion.backend.persistence.entity.FormaPago;
 import com.cotizacion.backend.service.interfaces.FormaPagoService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -18,7 +21,13 @@ public class FormaPagoController {
     private final FormaPagoService formaPagoService;
 
     @GetMapping
-    public ResponseEntity<List<FormaPago>> listarFormasPago() {
+    public ResponseEntity<Page<FormaPago>> listarFormasPago(
+            @PageableDefault(size = 10, sort = "idFormaPago") Pageable pageable) {
+        return ResponseEntity.ok(formaPagoService.findAll(pageable));
+    }
+
+    @GetMapping("/lista")
+    public ResponseEntity<List<FormaPago>> listarTodas() {
         return ResponseEntity.ok(formaPagoService.findAll());
     }
 
@@ -34,9 +43,19 @@ public class FormaPagoController {
         return ResponseEntity.status(HttpStatus.CREATED).body(formaPagoService.save(formaPago));
     }
 
+    @PutMapping("/{id}")
+    public ResponseEntity<FormaPago> actualizarFormaPago(@PathVariable Long id, @RequestBody @Valid FormaPago formaPagoDatos) {
+        return formaPagoService.findById(id)
+                .map(formaPagoExistente -> {
+                    formaPagoExistente.setNombre(formaPagoDatos.getNombre());
+                    formaPagoExistente.setDescripcion(formaPagoDatos.getDescripcion());
+                    return ResponseEntity.ok(formaPagoService.save(formaPagoExistente));
+                })
+                .orElse(ResponseEntity.notFound().build());
+    }
+
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> eliminarFormaPago(@PathVariable Long id) {
-        // Verificamos existencia antes de borrar para devolver 404 si no existe
         if (formaPagoService.findById(id).isEmpty()) {
             return ResponseEntity.notFound().build();
         }

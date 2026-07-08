@@ -6,6 +6,9 @@ import com.cotizacion.backend.presentation.dto.response.ClienteResponseDTO;
 import com.cotizacion.backend.mapper.ClienteMapper;
 import com.cotizacion.backend.service.interfaces.ClienteService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -23,12 +26,20 @@ public class ClienteController {
 
     // ==================== READ (Listar Todos) ====================
     @GetMapping
-    public ResponseEntity<List<ClienteResponseDTO>> listarClientes() {
-        List<ClienteResponseDTO> clientes = clienteService.findAll()
+    public ResponseEntity<Page<ClienteResponseDTO>> listarClientes(
+            @PageableDefault(size = 10, sort = "idCliente") Pageable pageable) {
+        Page<ClienteResponseDTO> clientes = clienteService.findAll(pageable)
+                .map(mapper::toDto);
+        return ResponseEntity.ok(clientes);
+    }
+
+    @GetMapping("/lista")
+    public ResponseEntity<List<ClienteResponseDTO>> listarTodos() {
+        List<ClienteResponseDTO> lista = clienteService.findAll()
                 .stream()
                 .map(mapper::toDto)
                 .toList();
-        return ResponseEntity.ok(clientes);
+        return ResponseEntity.ok(lista);
     }
 
     // ==================== READ (Buscar por ID) ====================

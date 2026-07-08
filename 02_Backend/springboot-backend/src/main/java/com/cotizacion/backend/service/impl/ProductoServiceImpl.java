@@ -4,6 +4,8 @@ import com.cotizacion.backend.persistence.entity.Producto;
 import com.cotizacion.backend.persistence.repository.*;
 import com.cotizacion.backend.service.interfaces.ProductoService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,6 +20,9 @@ public class ProductoServiceImpl implements ProductoService {
 
     @Override
     public List<Producto> findAll() { return repository.findAll(); }
+
+    @Override
+    public Page<Producto> findAll(Pageable pageable) { return repository.findAll(pageable); }
 
     @Override
     public List<Producto> findAllActivos() { return repository.findByActivoTrue(); }

@@ -62,17 +62,24 @@ INSERT INTO Persona (DNI, NOMBRE, TELEFONO, EMAIL) VALUES
 
 -- Usuarios (Password simulado, en producción usar BCrypt)
 INSERT INTO Usuario (USERNAME, PASSWORD, PERSONA_ID) VALUES 
-('admin', '$2a$10$EixZaYVK1.zL5v.x.E/5/O...', 1), -- ID Persona 1
-('vendedor1', '$2a$10$EixZaYVK1.zL5v.x.E/5/O...', 2), -- ID Persona 2
-('supervisor', '$2a$10$EixZaYVK1.zL5v.x.E/5/O...', 3), -- ID Persona 3
-('logistica', '$2a$10$EixZaYVK1.zL5v.x.E/5/O...', 4); -- ID Persona 4
+('admin', '$2a$10$.5Elh8fgxypNUWhpUUr/xOa2sZm0VIaE0qWuGGl9otUfobb46T1Pq', 1), -- ID Persona 1
+('vendedor1', '$2a$10$.5Elh8fgxypNUWhpUUr/xOa2sZm0VIaE0qWuGGl9otUfobb46T1Pq', 2), -- ID Persona 2
+('supervisor', '$2a$10$.5Elh8fgxypNUWhpUUr/xOa2sZm0VIaE0qWuGGl9otUfobb46T1Pq', 3), -- ID Persona 3
+('logistica', '$2a$10$.5Elh8fgxypNUWhpUUr/xOa2sZm0VIaE0qWuGGl9otUfobb46T1Pq', 4); -- ID Persona 4
 
--- Roles / Authority
-INSERT INTO Authority (TIPO, USUARIO_ID) VALUES 
-('ROLE_ADMIN', 1),
-('ROLE_SELLER', 2),
-('ROLE_MANAGER', 3),
-('ROLE_USER', 4);
+-- Roles 
+INSERT INTO Rol (NOMBRE) VALUES 
+('ROLE_ADMIN'),
+('ROLE_USER');
+
+-- Usuario_Rol (Solo existen 2 roles: 1=ROLE_ADMIN, 2=ROLE_USER)
+INSERT INTO Usuario_Rol (ID_USUARIO, ID_ROL) VALUES 
+(1, 1),   -- admin       → ROLE_ADMIN
+(1, 2),   -- admin       → ROLE_USER
+(2, 2),   -- vendedor1   → ROLE_USER
+(3, 1),   -- supervisor  → ROLE_ADMIN
+(3, 2),   -- supervisor  → ROLE_USER
+(4, 2);   -- logistica   → ROLE_USER
 
 -- =============================================
 -- 3. NEGOCIO: PRODUCTOS E INVENTARIO (Nivel 2)

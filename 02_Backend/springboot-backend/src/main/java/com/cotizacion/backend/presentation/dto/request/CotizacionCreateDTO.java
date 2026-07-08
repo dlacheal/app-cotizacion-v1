@@ -14,6 +14,8 @@ public record CotizacionCreateDTO(
         @NotNull(message = "La forma de pago es obligatoria")
         Long idFormaPago,
 
+        Long idEstado,
+
         // Opcional: Si el usuario viene del token, este campo podría omitirse
         Integer idUsuario,
 

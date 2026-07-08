@@ -1,11 +1,14 @@
 package com.cotizacion.backend.service.interfaces;
 
 import com.cotizacion.backend.persistence.entity.Cliente;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import java.util.List;
 import java.util.Optional;
 
 public interface ClienteService {
     List<Cliente> findAll();
+    Page<Cliente> findAll(Pageable pageable);
     Optional<Cliente> findById(Long id);
     // Búsqueda "fuzzy" para autocompletados en UI
     List<Cliente> buscarPorNombre(String termino);

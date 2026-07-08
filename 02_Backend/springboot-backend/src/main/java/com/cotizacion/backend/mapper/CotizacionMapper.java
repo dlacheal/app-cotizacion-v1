@@ -20,7 +20,7 @@ public interface CotizacionMapper {
     @Mapping(target = "clienteTelefono", source = "cliente.telefono")
     @Mapping(target = "clienteEmail", source = "cliente.email")
     @Mapping(target = "clienteDireccion", source = "cliente.direccion")
-    @Mapping(target = "usuarioUsername", source = "usuario.username")
+    @Mapping(target = "usuarioUsername", source = "usuario.persona.nombre")
     @Mapping(target = "monedaCodigo", source = "moneda.codigo")
     @Mapping(target = "monedaDescripcion", source = "moneda.descripcion")
     @Mapping(target = "formaPagoNombre", source = "formaPago.nombre")
@@ -37,7 +37,6 @@ public interface CotizacionMapper {
     // Ignoramos IDs y campos calculados que gestiona el Service
     @Mapping(target = "idCotizacion", ignore = true)
     @Mapping(target = "fecha", ignore = true)
-    @Mapping(target = "estado", ignore = true)
 
     // Nuevos campos financieros calculados (Ignorar al crear desde DTO)
     @Mapping(target = "inversionTotal", ignore = true)
@@ -51,6 +50,7 @@ public interface CotizacionMapper {
     @Mapping(target = "moneda.idMoneda", source = "idMoneda")
     @Mapping(target = "formaPago.idFormaPago", source = "idFormaPago")
     @Mapping(target = "usuario.idUsuario", source = "idUsuario")
+    @Mapping(target = "estado.idEstado", source = "idEstado")
     @Mapping(target = "detalles", source = "detalles")
     Cotizacion toEntity(CotizacionCreateDTO dto);
 

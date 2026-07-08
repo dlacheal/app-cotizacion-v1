@@ -9,6 +9,10 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -22,8 +26,15 @@ public class CotizacionController {
     private final CotizacionMapper cotizacionMapper;
 
     @GetMapping
-    public ResponseEntity<List<CotizacionResponseDTO>> listarTodas() {
-        // Método utilitario opcional para ver todo
+    public ResponseEntity<Page<CotizacionResponseDTO>> listarTodas(
+            @PageableDefault(size = 10, sort = "idCotizacion", direction = Sort.Direction.DESC) Pageable pageable) {
+        Page<CotizacionResponseDTO> pagina = cotizacionService.findAll(pageable)
+                .map(cotizacionMapper::toDto);
+        return ResponseEntity.ok(pagina);
+    }
+
+    @GetMapping("/lista")
+    public ResponseEntity<List<CotizacionResponseDTO>> listarTodosLista() {
         List<CotizacionResponseDTO> lista = cotizacionService.findAll()
                 .stream()
                 .map(cotizacionMapper::toDto)
@@ -81,5 +92,14 @@ public class CotizacionController {
 
         cotizacionService.cambiarEstado(id, estadoNombre.toUpperCase());
         return ResponseEntity.ok().build();
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> eliminarCotizacion(@PathVariable Long id) {
+        if (cotizacionService.findById(id).isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+        cotizacionService.delete(id);
+        return ResponseEntity.noContent().build();
     }
 }
