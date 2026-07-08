@@ -1,10 +1,13 @@
 package com.cotizacion.backend.mapper;
 
+import com.cotizacion.backend.persistence.entity.Categoria;
+import com.cotizacion.backend.persistence.entity.Proveedor;
 import com.cotizacion.backend.persistence.entity.Producto;
 import com.cotizacion.backend.presentation.dto.request.ProductoRequestDTO;
 import com.cotizacion.backend.presentation.dto.response.ProductoResponseDTO;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.mapstruct.MappingTarget;
 
 @Mapper(config = MapperConfig.class)
 public interface ProductoMapper {
@@ -15,10 +18,28 @@ public interface ProductoMapper {
     ProductoResponseDTO toDto(Producto entity);
 
     // DTO -> Entity (Escritura)
-    // MapStruct es inteligente: si el DTO tiene "idCategoria", y la Entity tiene "Categoria.idCategoria",
-    // necesitamos decirle cómo mapearlo. La forma más limpia para FKs es:
-    @Mapping(target = "categoria.idCategoria", source = "idCategoria")
-    @Mapping(target = "proveedor.idProveedor", source = "idProveedor")
+    @Mapping(target = "categoria", source = "idCategoria")
+    @Mapping(target = "proveedor", source = "idProveedor")
     @Mapping(target = "activo", constant = "true") // Por defecto al crear
     Producto toEntity(ProductoRequestDTO dto);
+
+    // DTO -> Entity (Actualización)
+    @Mapping(target = "idProducto", ignore = true)
+    @Mapping(target = "categoria", source = "idCategoria")
+    @Mapping(target = "proveedor", source = "idProveedor")
+    void updateEntityFromDto(ProductoRequestDTO dto, @MappingTarget Producto entity);
+
+    default Categoria mapCategoria(Long idCategoria) {
+        if (idCategoria == null) return null;
+        Categoria c = new Categoria();
+        c.setIdCategoria(idCategoria);
+        return c;
+    }
+
+    default Proveedor mapProveedor(Long idProveedor) {
+        if (idProveedor == null) return null;
+        Proveedor p = new Proveedor();
+        p.setIdProveedor(idProveedor);
+        return p;
+    }
 }

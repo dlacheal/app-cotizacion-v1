@@ -41,5 +41,5 @@ public class Usuario implements Serializable {
         joinColumns = @JoinColumn(name = "ID_USUARIO"),
         inverseJoinColumns = @JoinColumn(name = "ID_ROL")
     )
-    private List<Rol> roles;
+    private List<Rol> roles = new java.util.ArrayList<>();
 }

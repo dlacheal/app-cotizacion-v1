@@ -7,6 +7,8 @@ import com.cotizacion.backend.persistence.repository.*;
 import com.cotizacion.backend.service.interfaces.CotizacionService;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -24,12 +26,16 @@ public class CotizacionServiceImpl implements CotizacionService {
     private final CotizacionRepository repository;
     private final EstadoCotizacionRepository estadoRepository;
     private final ClienteRepository clienteRepository;
-    // private final ProductoRepository productoRepository; // Útil si necesitas
-    // validar existencias
+    private final UsuarioRepository usuarioRepository;
 
     @Override
     public List<Cotizacion> findAll() {
         return repository.findAll();
+    }
+
+    @Override
+    public Page<Cotizacion> findAll(Pageable pageable) {
+        return repository.findAll(pageable);
     }
 
     @Override
@@ -56,17 +62,27 @@ public class CotizacionServiceImpl implements CotizacionService {
         }
 
         // 2. Asignar estado inicial si es nulo
-        if (cotizacion.getEstado() == null) {
-            EstadoCotizacion estadoInicial = estadoRepository.findByNombre("PENDIENTE")
-                    .orElseThrow(() -> new RuntimeException("Estado PENDIENTE no configurado en BD"));
+        if (cotizacion.getEstado() == null || cotizacion.getEstado().getIdEstado() == null) {
+            EstadoCotizacion estadoInicial = estadoRepository.findByNombre("Borrador")
+                    .orElseThrow(() -> new RuntimeException("Estado Borrador no configurado en BD"));
             cotizacion.setEstado(estadoInicial);
+        } else {
+            EstadoCotizacion estadoCompleto = estadoRepository.findById(cotizacion.getEstado().getIdEstado())
+                    .orElseThrow(() -> new EntityNotFoundException("Estado no encontrado"));
+            cotizacion.setEstado(estadoCompleto);
         }
 
+        // 2b. Asignar usuario autenticado
+        String username = org.springframework.security.core.context.SecurityContextHolder.getContext().getAuthentication().getName();
+        com.cotizacion.backend.persistence.entity.Usuario usuario = usuarioRepository.findByUsername(username)
+                .orElseThrow(() -> new EntityNotFoundException("Usuario autenticado '" + username + "' no encontrado en base de datos"));
+        cotizacion.setUsuario(usuario);
+
         // 3. Vincular detalles a la cabecera
-        // Limpiamos la lista interna por seguridad y agregamos los nuevos para activar
-        // el helper
+        // Copiamos la lista a una nueva instancia antes de limpiar para evitar efectos colaterales de alias de referencia
+        List<CotizacionDetalle> copiaDetalles = new java.util.ArrayList<>(detalles);
         cotizacion.getDetalles().clear();
-        detalles.forEach(cotizacion::addDetalle);
+        copiaDetalles.forEach(cotizacion::addDetalle);
 
         // 4. Calcular todos los montos (Lógica de Negocio Financiera)
         recalcularMontos(cotizacion);
@@ -91,6 +107,13 @@ public class CotizacionServiceImpl implements CotizacionService {
         cotizacionExistente.setFormaPago(datosNuevos.getFormaPago());
         cotizacionExistente.setValidezDias(datosNuevos.getValidezDias());
         cotizacionExistente.setMoneda(datosNuevos.getMoneda());
+
+        // 1.2 Actualizar Estado si cambió
+        if (datosNuevos.getEstado() != null && datosNuevos.getEstado().getIdEstado() != null) {
+            EstadoCotizacion nuevoEstado = estadoRepository.findById(datosNuevos.getEstado().getIdEstado())
+                    .orElseThrow(() -> new EntityNotFoundException("Estado no encontrado"));
+            cotizacionExistente.setEstado(nuevoEstado);
+        }
 
         // 2. Actualizar Cliente si cambió
         if (!cotizacionExistente.getCliente().equals(datosNuevos.getCliente())) {
@@ -121,6 +144,12 @@ public class CotizacionServiceImpl implements CotizacionService {
 
         cotizacion.setEstado(nuevoEstado);
         repository.save(cotizacion);
+    }
+
+    @Override
+    @Transactional
+    public void delete(Long id) {
+        repository.deleteById(id);
     }
 
     /**
